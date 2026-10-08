@@ -1,0 +1,1678 @@
+<title>H.J. Baker · AP Platform PRD</title>
+
+<style>
+  :root {
+    color-scheme: light;
+    --paper:      #F7F7F4;
+    --plate:      #FFFFFF;
+    --band:       #EFEEE9;
+    --ink:        #12172B;
+    --navy:       #1F2A54;
+    --slate:      #555E72;
+    --faint:      #5F6778;
+    --ochre:      #A6571B;
+    --rule:       #DAD8D0;
+    --hold:       #8A6D05;
+    --hold-bg:    #FBF3DC;
+    --auto:       #1B6B4A;
+    --auto-bg:    #E6F2EB;
+
+    --display: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --body: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
+    --measure: 68ch;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --paper: #0E1220; --plate: #F1F0EC; --band: #171D30;
+      --ink: #EEEDE8; --navy: #C6CEE4; --slate: #A7AFC2; --faint: #8B93A6;
+      --ochre: #E09354; --rule: #2A3149;
+      --hold: #E3B94A; --hold-bg: #2A2410; --auto: #63C295; --auto-bg: #10241A;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #0E1220; --plate: #F1F0EC; --band: #171D30;
+    --ink: #EEEDE8; --navy: #C6CEE4; --slate: #A7AFC2; --faint: #8B93A6;
+    --ochre: #E09354; --rule: #2A3149;
+    --hold: #E3B94A; --hold-bg: #2A2410; --auto: #63C295; --auto-bg: #10241A;
+  }
+
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-size: 17px; line-height: 1.62;
+    margin: 0; padding: 0 clamp(18px, 5vw, 56px) 96px;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; }
+  .col { max-width: var(--measure); }
+
+  .masthead {
+    display: flex; flex-direction: column; gap: 18px;
+    padding: clamp(40px, 7vw, 84px) 0 30px; border-bottom: 2px solid var(--navy);
+  }
+  .eyebrow {
+    font-family: var(--display); font-size: 11px; font-weight: 650;
+    letter-spacing: .19em; text-transform: uppercase; color: var(--ochre);
+  }
+  h1 {
+    font-family: var(--display); font-weight: 680;
+    font-size: clamp(30px, 5.2vw, 50px); line-height: 1.04;
+    letter-spacing: -.022em; margin: 0; text-wrap: balance;
+  }
+  .standfirst { font-size: clamp(17px, 2vw, 20px); color: var(--slate); max-width: 62ch; margin: 0; }
+  .credit {
+    display: flex; gap: 22px; flex-wrap: wrap; padding-top: 6px;
+    font-family: var(--display); font-size: 12.5px; color: var(--faint);
+  }
+  .credit b { color: var(--ink); font-weight: 620; }
+
+  section { padding-top: clamp(44px, 6vw, 76px); }
+  h2 {
+    font-family: var(--display); font-weight: 660;
+    font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -.012em;
+    margin: 0 0 8px; text-wrap: balance;
+  }
+  h3 {
+    font-family: var(--display); font-weight: 640; font-size: 15.5px;
+    margin: 30px 0 8px; color: var(--navy);
+  }
+  h4 {
+    font-family: var(--display); font-weight: 640; font-size: 13px;
+    letter-spacing: .04em; text-transform: uppercase; color: var(--faint);
+    margin: 24px 0 8px;
+  }
+  .kicker {
+    font-family: var(--display); font-size: 11px; font-weight: 650;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--faint);
+    margin: 0 0 14px;
+  }
+  p { margin: 0 0 14px; }
+  .col > p:last-child { margin-bottom: 0; }
+  em { font-style: italic; color: var(--navy); }
+  .num { font-family: var(--mono); font-size: .93em; color: var(--ochre); font-weight: 600; }
+  ul, ol { margin: 0 0 14px; padding-left: 22px; }
+  li { margin-bottom: 7px; }
+  li::marker { color: var(--ochre); }
+
+  /* contents */
+  .toc {
+    background: var(--band); border: 1px solid var(--rule); border-radius: 5px;
+    padding: 20px 24px; margin: 34px 0 0;
+    columns: 2; column-gap: 40px; font-family: var(--display); font-size: 14px;
+  }
+  .toc ol { margin: 0; padding-left: 20px; }
+  .toc li { margin-bottom: 6px; break-inside: avoid; }
+  @media (max-width: 700px) { .toc { columns: 1; } }
+
+  .doctype { padding-top: clamp(44px, 6vw, 72px); }
+  .spec {
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+    border-top: 2px solid var(--navy); padding-top: 16px; margin-bottom: 4px;
+  }
+  .code {
+    font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em;
+    color: #FFFFFF; background: var(--ochre); padding: 4px 9px; border-radius: 3px; flex: none;
+  }
+  .spec h2 { margin: 0; flex: 1 1 auto; min-width: 12ch; }
+  .define { font-size: 16.5px; color: var(--slate); max-width: 64ch; margin: 2px 0 20px; }
+
+  .facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    margin: 0 0 26px; border-radius: 4px; overflow: hidden;
+  }
+  .fact { background: var(--band); padding: 12px 14px; }
+  .fact dt {
+    font-family: var(--display); font-size: 10px; font-weight: 650;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--faint); margin-bottom: 5px;
+  }
+  .fact dd { margin: 0; font-size: 14.5px; line-height: 1.45; }
+
+  figure { margin: 26px 0 8px; }
+  .plate {
+    background: var(--plate); border: 1px solid var(--rule); border-radius: 5px;
+    padding: 22px 18px; overflow-x: auto;
+  }
+  .plate pre.mermaid { margin: 0; display: flex; justify-content: center; min-width: min-content; }
+  figcaption {
+    font-family: var(--display); font-size: 12px; color: var(--faint);
+    margin-top: 9px; display: flex; gap: 8px; align-items: baseline;
+  }
+  figcaption b { color: var(--navy); font-weight: 640; flex: none; }
+
+  .legend {
+    display: flex; gap: 18px; flex-wrap: wrap; margin: 14px 0 0;
+    font-family: var(--display); font-size: 12px; color: var(--faint);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .swatch { width: 12px; height: 12px; border-radius: 2px; border: 1px solid; flex: none; }
+  .sw-hold { background: #FBF3DC; border-color: #8A6D05; }
+  .sw-auto { background: #E6F2EB; border-color: #1B6B4A; }
+  .sw-exc  { background: #FBEDE6; border-color: #A6571B; }
+  .sw-std  { background: #FFFFFF; border-color: #1F2A54; }
+
+  .tablewrap { overflow-x: auto; margin: 0 0 20px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 480px; }
+  caption {
+    text-align: left; font-family: var(--display); font-size: 11px; font-weight: 650;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--faint); padding-bottom: 9px;
+  }
+  th {
+    text-align: left; font-family: var(--display); font-size: 11.5px; font-weight: 650;
+    letter-spacing: .05em; text-transform: uppercase; color: var(--faint);
+    border-bottom: 1.5px solid var(--navy); padding: 0 14px 7px 0; vertical-align: bottom;
+  }
+  td { padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  td:first-child {
+    font-family: var(--display); font-size: 14.5px; font-weight: 620;
+    color: var(--navy); white-space: nowrap;
+  }
+  td.wrapcell:first-child { white-space: normal; }
+  tbody tr:last-child td { border-bottom: none; }
+  .mono-col { font-family: var(--mono); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  table.steps td:first-child { color: var(--ochre); font-family: var(--mono); font-size: 13px; }
+  table.ec td:first-child { font-family: var(--mono); font-size: 12.5px; color: var(--ochre); }
+
+  .note {
+    border-left: 3px solid var(--ochre); padding: 2px 0 2px 18px; margin: 22px 0;
+    color: var(--navy); font-size: 16.5px; max-width: 64ch;
+  }
+  .note b { color: var(--ink); }
+
+  footer {
+    margin-top: clamp(52px, 7vw, 88px); padding-top: 20px; border-top: 2px solid var(--navy);
+    font-family: var(--display); font-size: 12.5px; color: var(--faint);
+    display: flex; gap: 20px; flex-wrap: wrap; justify-content: space-between;
+  }
+  a { color: var(--ochre); }
+  a:focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Product requirements · prepared by Alferix</div>
+    <h1>AP Invoice Processing Platform</h1>
+    <p class="standfirst">The full specification: every document type, every step, every awkward
+      case we know about, and the architecture that has to carry it. This is the document the
+      build is measured against.</p>
+    <div class="credit">
+      <span><b>Client</b> H.J. Baker &amp; Bro., LLC</span>
+      <span><b>Replaces</b> Blue Creek (Vision360)</span>
+      <span><b>System of record</b> Sage X3</span>
+      <span><b>Version</b> 1.0 · draft for client review</span>
+    </div>
+  </header>
+
+  <!-- ==================== DOCUMENT CONTROL ==================== -->
+  <section>
+    <p class="kicker">Document control</p>
+    <h2>How to read this</h2>
+    <div class="col">
+      <p>This PRD is the functional and technical reference. Its companion, the
+        <em>Statement of Work</em>, carries scope boundaries, effort, price and hosting options
+        and refers back to the section numbers here rather than restating them.</p>
+      <p>Requirements are numbered <span class="num">FR-nn</span> (functional) and
+        <span class="num">NFR-nn</span> (non-functional). Edge cases are numbered by document
+        type — <span class="num">PO-04</span>, <span class="num">CR-02</span> and so on — and
+        every one of them states where it is enforced, because an edge case with no enforcement
+        point is only a good intention.</p>
+      <p>Everything here traces to five recorded working sessions with Symantha Schaeffer and
+        Kevin Weiland (July 2026), the twelve Sage export samples, and one Sage import sample.
+        Where we have inferred rather than been told, it says so.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Sources of truth</caption>
+        <thead><tr><th>Source</th><th>What it establishes</th></tr></thead>
+        <tbody>
+          <tr><td>Five recorded sessions</td><td>Process, roles, authority, pain points, volumes, the awkward cases</td></tr>
+          <tr><td>Sage export samples (12 files)</td><td>Master data shape, PO and receipt structure, document numbering, payment feedback</td></tr>
+          <tr><td>Sage import sample (1 file)</td><td>The exact payload Sage accepts today, field by field</td></tr>
+          <tr><td>Working prototype</td><td>Demonstrated behaviour for all five flows, 79 automated tests, 539 live invariant checks</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <nav class="toc">
+      <ol>
+        <li>Purpose, problem and objectives</li>
+        <li>Scope</li>
+        <li>Users, roles and authority</li>
+        <li>Operating companies and company determination</li>
+        <li>Master data and the Sage X3 contract</li>
+        <li>Intake, extraction and classification</li>
+        <li>Document type — PO invoices</li>
+        <li>Document type — Non-PO invoices</li>
+        <li>Document type — Prepayments</li>
+        <li>Document type — Credits</li>
+        <li>Document type — Rebills</li>
+        <li>Cross-cutting logic and controls</li>
+        <li>Reporting and analytics</li>
+        <li>Non-functional requirements</li>
+        <li>Architecture</li>
+        <li>Migration and cutover</li>
+        <li>Open decisions</li>
+        <li>Glossary</li>
+      </ol>
+    </nav>
+  </section>
+
+  <!-- ==================== 1. PURPOSE ==================== -->
+  <section>
+    <p class="kicker">Section 1</p>
+    <h2>Purpose, problem and objectives</h2>
+    <div class="col">
+      <p>H.J. Baker processes accounts payable for seven operating companies through a single
+        mailbox and a single ERP. The current tool, Blue Creek, does three useful things: it
+        holds the image, it routes for approval, and it lets one traveling approver approve from
+        email. Everything else — the keying, the coding, the matching — happens in Sage
+        afterwards. In Symantha's words, <em>"all the keying, the coding, all of that resides in
+        Sage."</em></p>
+      <p>That leaves five specific problems, and they are the reasons this platform exists.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Problems this platform must solve</caption>
+        <thead><tr><th>Problem</th><th>Today</th><th>Required outcome</th></tr></thead>
+        <tbody>
+          <tr><td class="wrapcell">Manual coding</td>
+              <td>Every line is keyed by hand into Sage after approval. Named as the single biggest
+                cost in the process.</td>
+              <td>Lines arrive coded — from the purchase order, from a receipt, or from a standing
+                template — and a person edits exceptions rather than typing everything.</td></tr>
+          <tr><td class="wrapcell">The 500-line ceiling</td>
+              <td>Blue Creek cannot handle more than 500 lines. A thousand-line load list has to be
+                worked outside the tool entirely.</td>
+              <td>No line-count limit. A document with 1,000+ lines across several purchase orders
+                is processed whole (<span class="num">NFR-2</span>).</td></tr>
+          <tr><td class="wrapcell">Batch-and-wait integration</td>
+              <td>Pipe-delimited files over SFTP, hourly, with a rolling 90-day window. Anything
+                older than 90 days is invisible to the tool.</td>
+              <td>Live Sage reads at the moment of use and a synchronous write with the document
+                number returned (<span class="num">FR-82</span>, <span class="num">FR-13</span>).</td></tr>
+          <tr><td class="wrapcell">The broken third link</td>
+              <td>An original invoice can be linked to its credit memo, but the rebill that
+                settles it cannot be linked to either. <em>"You lose that third link."</em></td>
+              <td>Original invoice, credit memo and rebill are one provable chain with all three
+                Sage numbers on it (<span class="num">FR-62</span>).</td></tr>
+          <tr><td class="wrapcell">No operational visibility</td>
+              <td>Volume, auto-match rate, PO versus non-PO split and vendor breakdown are not
+                readily available.</td>
+              <td>Dashboards on live data where every number is clickable through to the exact
+                documents behind it (§13).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Objectives and success measures</h3>
+    <div class="tablewrap">
+      <table>
+        <caption>Measures of success</caption>
+        <thead><tr><th>Objective</th><th>Measure</th><th>Target at end of hypercare</th></tr></thead>
+        <tbody>
+          <tr><td class="wrapcell">Reduce manual coding</td><td>Lines requiring manual entry</td><td>Under 15% of all lines</td></tr>
+          <tr><td class="wrapcell">Straight-through processing</td><td>PO invoices reaching approval with no human edit</td><td>70% or better</td></tr>
+          <tr><td class="wrapcell">Classification accuracy</td><td>Documents routed to the correct queue without human correction</td><td>95% or better</td></tr>
+          <tr><td class="wrapcell">Cycle time</td><td>Arrival to Sage document created, median</td><td>Under one working day</td></tr>
+          <tr><td class="wrapcell">Chain integrity</td><td>Settlement chains with all three Sage numbers linked</td><td>100% of settled rebills</td></tr>
+          <tr><td class="wrapcell">Nothing lost</td><td>Documents in a queue with no owner and no next action</td><td>Zero</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== 2. SCOPE ==================== -->
+  <section>
+    <p class="kicker">Section 2</p>
+    <h2>Scope</h2>
+    <div class="col">
+      <p>The platform owns the document from the moment it arrives to the moment Sage confirms
+        payment. Sage remains the system of record for the ledger; the platform never becomes a
+        second set of books.</p>
+    </div>
+
+    <h3>In scope</h3>
+    <ul class="col">
+      <li>Intake from the AP mailbox, including multi-attachment emails and scanned batches.</li>
+      <li>Extraction of header and line data with per-field confidence.</li>
+      <li>Rule-based classification into five document types, with a human queue below the
+        confidence threshold.</li>
+      <li>The five processing flows in full, including every gate where a person must decide.</li>
+      <li>Two- and three-way matching against Sage purchase orders and receipts, at receipt level.</li>
+      <li>Line coding from purchase orders, receipts and standing templates.</li>
+      <li>Approval hierarchy, ad-hoc routing, limits, delegation and email approval.</li>
+      <li>AP final review as a rule-driven control point.</li>
+      <li>Creation of purchase invoices and credit memos in Sage with the image attached, and
+        capture of the returned document number.</li>
+      <li>Payment status feedback from Sage.</li>
+      <li>Prepayment positions and drawdown; credit and rebill settlement chains.</li>
+      <li>Search, dashboards, analytics and a complete audit trail.</li>
+      <li>Administration of vendors' routing behaviour, templates, reference lists and users.</li>
+    </ul>
+
+    <h3>Out of scope</h3>
+    <ul class="col">
+      <li>Purchase order creation. Confirmed as not automatable — orders originate at manual
+        ordering sites and from IRT rail and truck line imports. The platform asks for the order
+        number; it does not invent one (see §17, retired requirement).</li>
+      <li>Changes inside Sage X3 itself, Sage licensing, and any Sage-side development. Where Sage
+        work is needed it is carried out by Net at Work.</li>
+      <li>Purchase requisitioning, goods receipting, inventory and the general ledger.</li>
+      <li>Payment execution and bank file generation — Sage does this.</li>
+      <li>Vendor self-service portal, vendor onboarding workflow and vendor statement
+        reconciliation.</li>
+      <li>Accounts receivable, expenses, payroll and any non-AP document.</li>
+      <li>Statutory e-invoicing network connectivity (Peppol and similar). Not required in the
+        current territories; noted as a future consideration.</li>
+      <li>Handwriting recognition beyond the printed and stamped content of freight tickets.
+        Illegible documents are routed to a person by design, not by failure.</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 3. USERS ==================== -->
+  <section>
+    <p class="kicker">Section 3</p>
+    <h2>Users, roles and authority</h2>
+    <div class="col">
+      <p>Six kinds of person touch a document, and the difference between them is authority, not
+        seniority. The platform enforces authority; it does not ask users to remember it.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Roles</caption>
+        <thead><tr><th>Role</th><th>Does</th><th>Cannot</th></tr></thead>
+        <tbody>
+          <tr><td>Processor / coder</td>
+              <td>Works the queues: resolves extraction exceptions, attaches purchase orders,
+                codes lines, submits for approval.</td>
+              <td>Approve above their own limit, or approve a document they submitted.</td></tr>
+          <tr><td>Approver</td>
+              <td>Approves within a limit, by company. May approve from email.</td>
+              <td>Edit coding after approval without the document returning to the processor.</td></tr>
+          <tr><td>AP team</td>
+              <td>Works exceptions, releases documents held by an AP rule, creates credit memos,
+                manages park queues.</td>
+              <td>Bypass the approval hierarchy.</td></tr>
+          <tr><td>AP administrator</td>
+              <td>Symantha's role. Full configuration: routing rules, thresholds, templates,
+                reference lists, users, limits. Investigates why a document will not match.</td>
+              <td>Alter a posted Sage document — that is a Sage action.</td></tr>
+          <tr><td>Treasury / CFO</td>
+              <td>Approves prepayments and large commitments; watches prepaid balances.</td>
+              <td>—</td></tr>
+          <tr><td>IT administrator</td>
+              <td>Manages access, integration credentials and environment configuration.</td>
+              <td>See or alter financial content beyond what their AP role grants.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Authority and escalation (FR-40 – FR-45)</h3>
+    <ul class="col">
+      <li>Every approver has a limit per company. A document above the limit escalates up the
+        hierarchy automatically; the user does not choose the next approver
+        (<span class="num">FR-41</span>).</li>
+      <li>Vendors on the hierarchy list route by hierarchy. Everything else routes ad-hoc, to the
+        person the business names. The list is client-owned and maintained by the AP team
+        (<span class="num">FR-42</span>).</li>
+      <li>Approval is required even when matching was automatic — <em>"if it's matched on an auto
+        match, it still has to go through the approval process"</em> — unless the AP team has
+        explicitly exempted that vendor or condition (<span class="num">FR-43</span>).</li>
+      <li>Nobody approves their own submission. Enforced, not advised
+        (<span class="num">FR-44</span>).</li>
+      <li>Delegation is time-boxed and audited, and the original approver remains visible on the
+        record (<span class="num">FR-45</span>).</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 4. COMPANIES ==================== -->
+  <section>
+    <p class="kicker">Section 4</p>
+    <h2>Operating companies and company determination</h2>
+    <div class="col">
+      <p>Each document belongs to exactly one of seven companies, and the vendor rarely states
+        which. It follows from who the invoice is sold to, and that single fact then drives the
+        accounting entity, the tax treatment, the currency, the approval route and every report
+        the business looks at. Get it wrong and everything downstream is wrong.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Operating companies</caption>
+        <thead><tr><th>Code</th><th>Company</th><th>Typical content</th><th>Currency and tax</th></tr></thead>
+        <tbody>
+          <tr><td class="mono-col">100</td><td>H.J. Baker</td><td>Corporate costs, rent, services, load lists</td><td>USD</td></tr>
+          <tr><td class="mono-col">405</td><td>HJB Sulphur</td><td>The bulk of sulphur purchasing and rail movement</td><td>USD</td></tr>
+          <tr><td class="mono-col">410</td><td>HJB Logistics</td><td>Freight, trucking, terminal handling</td><td>USD</td></tr>
+          <tr><td class="mono-col">415</td><td>HJB Sulphur CAN</td><td>Canadian purchasing</td><td>CAD · GST, PST</td></tr>
+          <tr><td class="mono-col">420</td><td>HJB Sulphur Intl</td><td>International movement</td><td>USD, mixed</td></tr>
+          <tr><td class="mono-col">435</td><td>HJB Sulphur UK</td><td>United Kingdom entity</td><td>GBP · VAT</td></tr>
+          <tr><td class="mono-col">900</td><td>HJB Canada</td><td>Canadian corporate costs</td><td>CAD · GST, PST</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <p><b>FR-05 — company determination.</b> The platform maps the sold-to name on the document
+        to a company code through a client-owned mapping list. When a new trading name appears,
+        that list is the single place it is added. If no mapping exists and the document does not
+        state a company, the document is held for a person with the reason stated; it is never
+        guessed.</p>
+      <p>A material share of activity is <em>intercompany</em> — Canadian entities in particular
+        appear on both sides of settlement arrangements. Intercompany documents follow the same
+        five flows; the company pair is recorded so intercompany reporting and elimination remain
+        possible.</p>
+    </div>
+  </section>
+
+  <!-- ==================== 5. MASTER DATA ==================== -->
+  <section>
+    <p class="kicker">Section 5</p>
+    <h2>Master data and the Sage X3 contract</h2>
+    <div class="col">
+      <p>Today twelve pipe-delimited files move from Sage to Blue Creek hourly over SFTP, covering
+        a rolling 90-day window, and one file per invoice moves back. Every one of those files
+        becomes a live API call. The field-level contract below is inferred from the samples
+        Symantha provided and must be confirmed with Net at Work before build
+        (§17, decision D-01).</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Reads — Sage to platform</caption>
+        <thead><tr><th>Feed</th><th>Sample volume<br>(90 days)</th><th>Platform use</th><th>Freshness required</th></tr></thead>
+        <tbody>
+          <tr><td>Reference lists</td><td class="mono-col">6 files</td>
+              <td>GL account, department, division, project, sales channel, branch site — the
+                coding block on every line</td><td>Daily</td></tr>
+          <tr><td>Vendor master</td><td class="mono-col">2,686 rows</td>
+              <td>Vendor code, address IDs, terms, currency, pay method, remit note. Read live at
+                extraction so the document reflects Sage, not a stale copy
+                (<span class="num">FR-22</span>)</td><td>Live on use</td></tr>
+          <tr><td>PO headers</td><td class="mono-col">9,084 rows</td>
+              <td>Order, vendor, date, amount, currency, buyer, status</td><td>Live on use</td></tr>
+          <tr><td>PO lines and shipment lines</td><td class="mono-col">29,725 rows</td>
+              <td>Quantity, price, unit, the full coding block, match type per line (2-way or
+                3-way), ship date and BOL</td><td>Live on use</td></tr>
+          <tr><td>PO receipts</td><td class="mono-col">21,047 rows</td>
+              <td>Receipt number, quantity, amount, receipt date — matching is at receipt level
+                (<span class="num">FR-35</span>)</td><td>Live on use</td></tr>
+          <tr><td>Invoice validation</td><td class="mono-col">9,991 rows</td>
+              <td>Sage's confirmation: success flag and the created document number, with the
+                platform ID travelling on it</td><td>Synchronous on write</td></tr>
+          <tr><td>Payment status</td><td class="mono-col">8,882 rows</td>
+              <td>Payment number, date, amount, method</td><td>Daily or webhook</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <b>The volume anchor.</b> 9,991 invoice validations across a 90-day sample is roughly
+      <b>3,330 invoices per month</b>, and 8,882 payments is roughly 2,960 per month. Those two
+      numbers, taken from your own Sage exports, are what the sizing and infrastructure estimates
+      in the SOW are built on rather than a guess.
+    </div>
+
+    <h3>Document numbering (FR-13, FR-61, FR-73)</h3>
+    <div class="tablewrap">
+      <table>
+        <caption>Real Sage formats the platform must produce and parse</caption>
+        <thead><tr><th>Document</th><th>Format</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Purchase order</td><td class="mono-col">P + 2-digit year + - + 6 digits</td><td class="mono-col">P26-005941</td></tr>
+          <tr><td>Purchase invoice</td><td class="mono-col">PIN + 6 digits</td><td class="mono-col">PIN196765</td></tr>
+          <tr><td>Purchase credit memo</td><td class="mono-col">PCM + 6 digits</td><td class="mono-col">PCM004205</td></tr>
+          <tr><td>Receipt</td><td class="mono-col">R + 2-digit year + - + 6 digits</td><td class="mono-col">R26-007981</td></tr>
+          <tr><td>Payment</td><td class="mono-col">PAY + method + 6 digits</td><td class="mono-col">PAYAC023358 · PAYWT · PAYEF · PAYDD</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <p>Legacy purchase-order formats exist in the data (<span class="num">P000037</span>,
+        <span class="num">P19-000126</span>). Validation accepts legacy shapes on read and enforces
+        the current shape on entry.</p>
+    </div>
+
+    <h3>Write — platform to Sage (FR-13)</h3>
+    <div class="col">
+      <p>One call per document creates the purchase invoice or credit memo with the image attached
+        and returns the document number, which is written back onto the platform record
+        immediately. This replaces both the hourly file drop and the 90-day lookback limit. The
+        call carries: company, vendor and address ID, invoice number and date, due date, the
+        coding block per line, line amounts and descriptions, net, tax, freight, gross, currency,
+        the PO or non-PO flag, and the platform ID that lets Sage and the platform find each
+        other later.</p>
+      <p>Writes are idempotent on the platform ID: a retry after a timeout cannot create a second
+        purchase invoice (<span class="num">NFR-8</span>).</p>
+    </div>
+  </section>
+
+  <!-- ==================== 6. INTAKE ==================== -->
+  <section>
+    <p class="kicker">Section 6</p>
+    <h2>Intake, extraction and classification</h2>
+    <div class="col">
+      <p>One route in, one classification decision, five destinations. Everything that follows in
+        sections 7 to 11 assumes this has already happened.</p>
+    </div>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Document arrives in the AP mailbox"] --> B["Split attachments into separate documents"]
+    B --> C["Store the image and record the arrival"]
+    C --> D{"Have we seen this before?"}
+    D -->|"same vendor, number and amount"| DUP["Refused as a duplicate"]
+    D -->|"new"| E["Read header and line data with confidence per field"]
+    E --> F["Read the vendor live from Sage"]
+    F --> G{"Apply routing rules in priority order"}
+    G -->|"confidence at or above threshold"| H["Route to the document type queue"]
+    G -->|"below threshold"| MR["Manual review — a person classifies"]
+    MR --> H
+    H --> I["Processing begins in the queue"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef stop fill:#FBEDE6,stroke:#A6571B,color:#6B3510
+    class MR hold
+    class DUP stop
+</pre>
+      </div>
+      <figcaption><b>Intake.</b> Arrival, duplicate control, extraction, classification, routing.</figcaption>
+      <div class="legend">
+        <span><i class="swatch sw-std"></i> automatic step</span>
+        <span><i class="swatch sw-hold"></i> a person must decide</span>
+        <span><i class="swatch sw-exc"></i> refused</span>
+      </div>
+    </figure>
+
+    <h3>Intake requirements</h3>
+    <div class="tablewrap">
+      <table class="steps">
+        <caption>Intake — step by step</caption>
+        <thead><tr><th>Ref</th><th>Step</th><th>Control</th></tr></thead>
+        <tbody>
+          <tr><td>FR-10</td><td class="wrapcell">Poll the AP mailbox and ingest every attachment as
+            its own document, preserving the source email for later reading.</td>
+            <td>Nothing is ingested twice; the email remains viewable from the document.</td></tr>
+          <tr><td>FR-11</td><td class="wrapcell">Accept PDF, TIFF and common image formats, single
+            or multi-page, including scanned batches of several invoices in one file.</td>
+            <td>Batch scans are separated; each separated document is auditable back to the
+              original file and page range.</td></tr>
+          <tr><td>FR-12</td><td class="wrapcell">Refuse duplicates on the combination of vendor,
+            invoice number and amount.</td>
+            <td>Catches genuine resends without blocking legitimate re-invoicing at a different
+              amount. The refusal names the document already holding the number.</td></tr>
+          <tr><td>FR-20</td><td class="wrapcell">Extract header fields and every line, with a
+            confidence score per field.</td>
+            <td>No line-count ceiling. Fields below a per-field threshold are marked for the
+              processor rather than silently accepted.</td></tr>
+          <tr><td>FR-22</td><td class="wrapcell">Read the vendor record live from Sage at
+            extraction time.</td>
+            <td>Terms, currency, pay method and remit detail always reflect Sage.</td></tr>
+          <tr><td>FR-25</td><td class="wrapcell">Show the image beside the extracted data with
+            each field's confidence visible.</td>
+            <td>A processor can verify a value against the document without leaving the screen.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Classification rules (FR-30, FR-33)</h3>
+    <div class="col">
+      <p>Rules are evaluated in priority order and the first match wins. The table is
+        configuration, not code — the AP administrator adds, reorders, disables and edits rules,
+        and changes are audited.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <caption>Routing rules in priority order</caption>
+        <thead><tr><th>Priority</th><th>Condition</th><th>Routes to</th><th>Why this order</th></tr></thead>
+        <tbody>
+          <tr><td class="mono-col">10</td><td>Vendor is marked as prepaid</td><td>Prepayments</td>
+              <td>The vendor relationship overrides document appearance. <em>"We could mark those
+                two vendors — anything from them is a prepayment."</em></td></tr>
+          <tr><td class="mono-col">20</td><td>Negative total, or cancellation wording</td><td>Credits</td>
+              <td>A negative total is unambiguous and must not be posted as an invoice.</td></tr>
+          <tr><td class="mono-col">32</td><td>Vendor is marked as a settlement (netback) vendor and
+            the document re-invoices at a settled price</td><td>Rebills</td>
+              <td>Only these vendors produce rebills; the marking lives on the supplier profile.</td></tr>
+          <tr><td class="mono-col">40</td><td>A purchase order number is present and valid</td><td>PO invoices</td>
+              <td>The strongest positive signal available.</td></tr>
+          <tr><td class="mono-col">99</td><td>Anything else</td><td>Non-PO invoices</td>
+              <td>The safe default: a person will decide whether an order is needed.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <p><b>The confidence threshold.</b> A single configurable threshold (default 0.80) decides
+        whether the platform routes on its own or asks. Below it the document waits in Manual
+        Review with the reason stated — poor scan, unknown vendor, ambiguous document type — and a
+        person classifies it in a screen that shows the image on one side and the five types on
+        the other. Selecting a type only selects it; a confirm action commits and moves to the
+        next document, so a mis-click costs nothing.</p>
+      <p>An unknown vendor applies a fixed penalty to confidence, because a document from a vendor
+        Sage has never seen is exactly the case where a confident-looking guess is most dangerous.</p>
+      <p><b>Rollout posture.</b> Automatic routing is earned, not assumed. The threshold starts
+        high, and the business raises automation company by company as accuracy proves itself —
+        which is how Symantha asked for it.</p>
+    </div>
+
+    <h3>Manual review edge cases</h3>
+    <div class="cases">
+      <div class="case"><div class="when">The scan is poor or the vendor name is unreadable</div>
+        <div class="then">Held for a person with the reason stated rather than guessed at. A faxed
+          handwritten ticket and a degraded scan end up in the same place.</div></div>
+      <div class="case"><div class="when">The document is a statement of account, not an invoice</div>
+        <div class="then">Held for a person. A statement listing several open items is not
+          something to post, and the ambiguity is surfaced rather than resolved silently.</div></div>
+      <div class="case"><div class="when">One email carries several invoices</div>
+        <div class="then">Split into separate documents at intake, each classified on its own
+          merits, all traceable to the one email.</div></div>
+      <div class="case"><div class="when">The document is not an AP document at all</div>
+        <div class="then">A person marks it as out of scope with a reason; it leaves the working
+          queues but stays searchable and auditable.</div></div>
+    </div>
+  </section>
+
+  <!-- ==================== 7. PO ==================== -->
+  <div class="doctype">
+    <div class="spec"><span class="code">PO</span><h2>Section 7 · Purchase-order invoices</h2></div>
+    <p class="define">Goods or services that were ordered properly. A purchase order already
+      exists in Sage and the invoice quotes it. This is the majority of volume and the case that
+      should need the least human attention.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Recognised by</dt><dd>A valid purchase order number on the document</dd></div>
+      <div class="fact"><dt>Owned by</dt><dd>Processor, then approver</dd></div>
+      <div class="fact"><dt>Becomes in Sage</dt><dd>Purchase invoice <span class="num">PIN######</span></dd></div>
+      <div class="fact"><dt>Stops for a person</dt><dd>Approval, and AP review only if a rule fires</dd></div>
+    </dl>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Invoice arrives quoting a purchase order"] --> B["Read header and line detail"]
+    B --> C["Validate the order against Sage"]
+    C --> D{"What match does the order require?"}
+    D -->|"three-way"| E["Select receipts by ship date and BOL"]
+    D -->|"two-way"| F["Match against the order alone"]
+    E --> G{"Quantity and price within tolerance?"}
+    F --> G
+    G -->|"no"| X["Exception for a processor with the variance shown"]
+    X --> G
+    G -->|"yes"| H["Check net plus taxes plus freight equals gross"]
+    H --> I["Route for approval by hierarchy and limit"]
+    I --> J{"Does an AP rule flag this one?"}
+    J -->|"no"| K["Create purchase invoice in Sage with the image"]
+    J -->|"yes"| L["AP final review"]
+    L --> K
+    K --> M["Payment confirmed by Sage"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef exc fill:#FBEDE6,stroke:#A6571B,color:#6B3510
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    class I,L hold
+    class X exc
+    class K,M sage
+</pre>
+      </div>
+      <figcaption><b>PO invoice.</b> Automatic through matching; a person only for approval and flagged exceptions.</figcaption>
+      <div class="legend">
+        <span><i class="swatch sw-std"></i> automatic step</span>
+        <span><i class="swatch sw-hold"></i> a person must decide</span>
+        <span><i class="swatch sw-exc"></i> exception</span>
+        <span><i class="swatch sw-auto"></i> Sage X3</span>
+      </div>
+    </figure>
+
+    <h3>Process steps</h3>
+    <div class="tablewrap">
+      <table class="steps">
+        <caption>PO invoice — required behaviour, step by step</caption>
+        <thead><tr><th>Step</th><th>What happens</th><th>Actor</th><th>Control enforced</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="wrapcell">Header and lines are extracted with confidence per field; the order number is read.</td>
+            <td>Platform</td><td>Fields below threshold are marked, not accepted silently.</td></tr>
+          <tr><td>2</td><td class="wrapcell">The order is validated against Sage: it exists, it is open, the vendor agrees, the company agrees.</td>
+            <td>Platform</td><td>A mistyped or closed order stops here with the reason named (FR-34).</td></tr>
+          <tr><td>3</td><td class="wrapcell">Match type is read per line from the order — Sage carries 2-Way or 3-Way on the line itself.</td>
+            <td>Platform</td><td>The platform does not decide the match type; the order does.</td></tr>
+          <tr><td>4</td><td class="wrapcell">For three-way lines, open receipts are selected by the ship date and BOL pair, which is the unique receipt key.</td>
+            <td>Platform</td><td>Receipt-level matching (FR-35). A thousand receipts are reconciled as a set; nobody ticks boxes.</td></tr>
+          <tr><td>5</td><td class="wrapcell">Quantity and price are compared to the order within configured tolerance.</td>
+            <td>Platform</td><td>Outside tolerance becomes an exception with the variance shown, not an automatic rejection to the vendor.</td></tr>
+          <tr><td>6</td><td class="wrapcell">Lines are coded from the order: account, division, sales channel, site, department.</td>
+            <td>Platform</td><td>No manual keying for matched lines. This is the coding saving.</td></tr>
+          <tr><td>7</td><td class="wrapcell">Totals are validated: net plus taxes plus freight must equal the stated gross.</td>
+            <td>Platform</td><td>Cannot be submitted while out of balance; the difference is shown (FR-27).</td></tr>
+          <tr><td>8</td><td class="wrapcell">The four key header fields are confirmed against the image — vendor, invoice number, date, amount.</td>
+            <td>Processor</td><td>Defaults from the supplier record never override what the document says.</td></tr>
+          <tr><td>9</td><td class="wrapcell">The document routes for approval by hierarchy and limit, or ad-hoc for vendors not on the hierarchy list.</td>
+            <td>Approver</td><td>Auto-matched still requires approval unless AP has exempted it. No self-approval.</td></tr>
+          <tr><td>10</td><td class="wrapcell">AP rules are evaluated. If none fire, the document goes straight to Sage; if one fires, AP reviews first.</td>
+            <td>AP team</td><td>Rules are configuration (§12) and every release is audited.</td></tr>
+          <tr><td>11</td><td class="wrapcell">The purchase invoice is created in Sage with the image attached; the returned PIN is written back.</td>
+            <td>Platform</td><td>Idempotent on platform ID — a retry cannot double-post.</td></tr>
+          <tr><td>12</td><td class="wrapcell">Payment status is captured from Sage and the document closes.</td>
+            <td>Platform</td><td>Payment number and method recorded on the record.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Edge cases</h3>
+    <div class="tablewrap">
+      <table class="ec">
+        <caption>PO invoices — edge case register</caption>
+        <thead><tr><th>ID</th><th>Condition</th><th>Required handling</th><th>Enforced at</th></tr></thead>
+        <tbody>
+          <tr><td>PO-01</td><td class="wrapcell">The invoice beats the goods — nothing receipted yet</td>
+            <td>Match against the order alone and mark the document clearly as a two-way match, so the difference is visible to whoever approves it.</td><td>Step 4</td></tr>
+          <tr><td>PO-02</td><td class="wrapcell">Quantity or price does not agree</td>
+            <td>Exception for a processor with the variance stated. Most are resolved internally; rejection to the vendor is a decision, not a default.</td><td>Step 5</td></tr>
+          <tr><td>PO-03</td><td class="wrapcell">One invoice covers many bills of lading</td>
+            <td>Legitimate for some vendors. Those vendors sit on an approved list so the one-BOL check does not fight them every month.</td><td>Step 4 + config</td></tr>
+          <tr><td>PO-04</td><td class="wrapcell">A monthly summary covers about a thousand receipts</td>
+            <td>Open receipts for the period are selected as a set and reconciled against the invoice total.</td><td>Step 4</td></tr>
+          <tr><td>PO-05</td><td class="wrapcell">A load list runs past a thousand lines</td>
+            <td>Processed whole, across however many pages it takes. Line count is not a limit — this is the Blue Creek ceiling removed.</td><td>Steps 1, 4 · NFR-2</td></tr>
+          <tr><td>PO-06</td><td class="wrapcell">The same invoice arrives twice</td>
+            <td>Refused before creation on vendor, number and amount together, naming the document that already holds it.</td><td>Intake · FR-12</td></tr>
+          <tr><td>PO-07</td><td class="wrapcell">Taxes and freight do not add up</td>
+            <td>Submission blocked and the difference shown. GST, PST and VAT are held as separate lines, not lumped together.</td><td>Step 7</td></tr>
+          <tr><td>PO-08</td><td class="wrapcell">Canadian and UK invoices</td>
+            <td>Currency and tax treatment follow the company that owns the invoice, so each entity's tax lines are correct.</td><td>Steps 6, 7 · §4</td></tr>
+          <tr><td>PO-09</td><td class="wrapcell">Payment terms on the document differ from the vendor default</td>
+            <td>The document wins, because that is what was agreed on this purchase, and the override is flagged so AP can see it.</td><td>Step 8</td></tr>
+          <tr><td>PO-10</td><td class="wrapcell">The order is already fully invoiced</td>
+            <td>Refused with the invoice that consumed it named, so the processor can tell a duplicate from a wrong order number.</td><td>Step 2</td></tr>
+          <tr><td>PO-11</td><td class="wrapcell">Sage is unreachable at write time</td>
+            <td>The document holds in a retry state with the failure visible; it never silently disappears and never double-posts on recovery.</td><td>Step 11 · NFR-8</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Acceptance criteria</h3>
+    <ul class="col">
+      <li>A three-way PO invoice with receipts present matches and codes with no human edit.</li>
+      <li>A 1,000-line load list spanning several orders processes end to end within performance targets.</li>
+      <li>A price variance outside tolerance appears as an exception showing ordered versus invoiced.</li>
+      <li>An out-of-balance document cannot be submitted, and the imbalance is stated.</li>
+      <li>The PIN returned by Sage is visible on the document within seconds of release.</li>
+    </ul>
+  </div>
+
+  <!-- ==================== 8. NON-PO ==================== -->
+  <div class="doctype">
+    <div class="spec"><span class="code">NPO</span><h2>Section 8 · Non-PO invoices</h2></div>
+    <p class="define">An invoice with no purchase order on it. Either an order should exist and
+      does not yet, or this is a supplier that will never have one — rent, equipment, professional
+      services. The platform's job is to tell those two apart and never guess.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Recognised by</dt><dd>No valid purchase order quoted</dd></div>
+      <div class="fact"><dt>Owned by</dt><dd>Processor, then approver</dd></div>
+      <div class="fact"><dt>Becomes in Sage</dt><dd>Purchase invoice <span class="num">PIN######</span></dd></div>
+      <div class="fact"><dt>Stops for a person</dt><dd>The PO decision, then approval</dd></div>
+    </dl>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Invoice arrives with no purchase order"] --> B["Read header and line detail"]
+    B --> C{"Should this have a purchase order?"}
+    C -->|"yes, and it exists now"| D["Attach the order number"]
+    C -->|"yes, but not raised yet"| W["Waits in an awaiting-order state"]
+    C -->|"no, this supplier never has one"| T["Code the lines from a standing template"]
+    W --> D
+    D --> M["Match against the order"]
+    M --> AP["Route for approval"]
+    T --> AP
+    AP --> R{"Does an AP rule flag this one?"}
+    R -->|"no"| S["Create purchase invoice in Sage"]
+    R -->|"yes"| V["AP final review"]
+    V --> S
+    S --> P["Payment confirmed by Sage"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    class C,W,AP,V hold
+    class S,P sage
+</pre>
+      </div>
+      <figcaption><b>Non-PO invoice.</b> One decision splits the flow: an order is coming, or there will never be one.</figcaption>
+      <div class="legend">
+        <span><i class="swatch sw-std"></i> automatic step</span>
+        <span><i class="swatch sw-hold"></i> a person must decide</span>
+        <span><i class="swatch sw-auto"></i> Sage X3</span>
+      </div>
+    </figure>
+
+    <h3>Process steps</h3>
+    <div class="tablewrap">
+      <table class="steps">
+        <caption>Non-PO invoice — required behaviour, step by step</caption>
+        <thead><tr><th>Step</th><th>What happens</th><th>Actor</th><th>Control enforced</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="wrapcell">Header and lines are extracted; no order number is found or the one present fails validation.</td>
+            <td>Platform</td><td>An invalid order number is reported as invalid, not ignored.</td></tr>
+          <tr><td>2</td><td class="wrapcell">The document reaches the PO decision — a gate, not a guess. The vendor's last order in Sage is shown for reference.</td>
+            <td>Processor</td><td>The platform never creates a purchase order. Reference information only (§17, D-04).</td></tr>
+          <tr><td>3a</td><td class="wrapcell">An order exists or is raised: its number is attached and validated against the numbering convention and against other invoices.</td>
+            <td>Processor</td><td>Wrong shape refused; already-used order refused with the holder named.</td></tr>
+          <tr><td>3b</td><td class="wrapcell">This supplier will never have an order: lines are coded from a standing template built by the AP team.</td>
+            <td>Processor</td><td>Templates are configuration; a processor picks one and enters amounts only.</td></tr>
+          <tr><td>4</td><td class="wrapcell">Where an order was attached, matching runs exactly as for a PO invoice.</td>
+            <td>Platform</td><td>Nothing is re-keyed; processing resumes where it stopped.</td></tr>
+          <tr><td>5</td><td class="wrapcell">Totals are validated and the four key header fields are confirmed against the image.</td>
+            <td>Processor</td><td>Same controls as PO invoices.</td></tr>
+          <tr><td>6</td><td class="wrapcell">Approval routes by hierarchy and limit, or ad-hoc for vendors not on the hierarchy list.</td>
+            <td>Approver</td><td>No self-approval; escalation is automatic above limit.</td></tr>
+          <tr><td>7</td><td class="wrapcell">AP rules are evaluated, then the purchase invoice is created in Sage with the image and the PIN written back.</td>
+            <td>AP team, Platform</td><td>Idempotent write; AP release audited.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Edge cases</h3>
+    <div class="tablewrap">
+      <table class="ec">
+        <caption>Non-PO invoices — edge case register</caption>
+        <thead><tr><th>ID</th><th>Condition</th><th>Required handling</th><th>Enforced at</th></tr></thead>
+        <tbody>
+          <tr><td>NPO-01</td><td class="wrapcell">An order is needed but does not exist yet</td>
+            <td>The invoice waits in a visible awaiting-order state with the vendor's last order shown, rather than disappearing into a pile on somebody's desk.</td><td>Step 2</td></tr>
+          <tr><td>NPO-02</td><td class="wrapcell">The vendor will never have an order</td>
+            <td>Office rent, equipment, professional services: lines are coded from a standing template and the invoice goes straight to approval.</td><td>Step 3b</td></tr>
+          <tr><td>NPO-03</td><td class="wrapcell">The order number is mistyped</td>
+            <td>Checked against the numbering convention and refused before it reaches Sage.</td><td>Step 3a</td></tr>
+          <tr><td>NPO-04</td><td class="wrapcell">The order is already on another invoice</td>
+            <td>Refused, and the invoice holding that order is named, so the processor can see at once whether this is a duplicate or a wrong number.</td><td>Step 3a</td></tr>
+          <tr><td>NPO-05</td><td class="wrapcell">The ordering site raises the order days later</td>
+            <td>Attach it then. Processing resumes exactly where it stopped and nothing is re-keyed.</td><td>Steps 2 to 4</td></tr>
+          <tr><td>NPO-06</td><td class="wrapcell">The scan is poor and the vendor is unreadable</td>
+            <td>Held for a person at classification rather than guessed at, with the reason stated.</td><td>Intake · §6</td></tr>
+          <tr><td>NPO-07</td><td class="wrapcell">The document is a statement of account</td>
+            <td>Held for a person. A statement of several open items is not something to post.</td><td>Intake · §6</td></tr>
+          <tr><td>NPO-08</td><td class="wrapcell">A template does not fit the invoice</td>
+            <td>The processor codes lines directly, and the gap is reported so the AP team can extend the template library.</td><td>Step 3b</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Acceptance criteria</h3>
+    <ul class="col">
+      <li>A rent invoice with no order codes from a template and reaches approval without matching.</li>
+      <li>An invoice held awaiting an order resumes and matches when the number is attached later, with no re-keying.</li>
+      <li>An order number already used on another invoice is refused, naming that invoice.</li>
+    </ul>
+  </div>
+
+  <!-- ==================== 9. PREPAYMENTS ==================== -->
+  <div class="doctype">
+    <div class="spec"><span class="code">PRE</span><h2>Section 9 · Prepayments</h2></div>
+    <p class="define">Two vendors are paid before delivery, and everything they ship afterwards
+      draws that balance down. Two marked vendors today — one trued up monthly, one quarterly —
+      running at roughly a thousand loads a month, with quarterly true-ups near three thousand
+      invoices.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Recognised by</dt><dd>The vendor is marked as prepaid on the supplier profile</dd></div>
+      <div class="fact"><dt>Owned by</dt><dd>Processor, approver, treasury</dd></div>
+      <div class="fact"><dt>Becomes in Sage</dt><dd>A payment, then invoices drawing it down</dd></div>
+      <div class="fact"><dt>Stops for a person</dt><dd>Approval, usually at CFO level for the lump sum</dd></div>
+    </dl>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Document arrives from a prepaid vendor"] --> B{"Is this the lump sum or a shipment?"}
+    B -->|"lump sum for a period"| C["Register the prepayment position"]
+    C --> D["Approve, usually at CFO level"]
+    D --> E["Pay it and record the payment against the period"]
+    B -->|"shipment true-up"| F["Match the shipment as an ordinary invoice"]
+    F --> G["Draw the amount down against the open position"]
+    G --> H{"How much of the balance is left?"}
+    H -->|"approaching the limit"| W["Warn treasury while there is time to act"]
+    H -->|"over the limit"| X["Flag for review with the overage stated"]
+    H -->|"comfortable"| I["Approve and post to Sage"]
+    W --> I
+    X --> I
+    I --> P["Payment confirmed by Sage"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef exc fill:#FBEDE6,stroke:#A6571B,color:#6B3510
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    class D,W,I hold
+    class X exc
+    class E,P sage
+</pre>
+      </div>
+      <figcaption><b>Prepayment.</b> Two different documents: the lump sum that creates the position, and every shipment that consumes it.</figcaption>
+      <div class="legend">
+        <span><i class="swatch sw-std"></i> automatic step</span>
+        <span><i class="swatch sw-hold"></i> a person must decide</span>
+        <span><i class="swatch sw-exc"></i> exception</span>
+        <span><i class="swatch sw-auto"></i> Sage X3</span>
+      </div>
+    </figure>
+
+    <h3>Process steps</h3>
+    <div class="tablewrap">
+      <table class="steps">
+        <caption>Prepayments — required behaviour, step by step</caption>
+        <thead><tr><th>Step</th><th>What happens</th><th>Actor</th><th>Control enforced</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="wrapcell">The vendor's prepaid marking routes the document here regardless of how the document looks.</td>
+            <td>Platform</td><td>The marking lives on the supplier profile and is AP-administered.</td></tr>
+          <tr><td>2</td><td class="wrapcell">The document is classified as the lump sum or a shipment true-up, from its own wording and period, not from its size.</td>
+            <td>Platform</td><td>Size alone never decides — ordinary true-ups from these vendors run into eight figures.</td></tr>
+          <tr><td>3</td><td class="wrapcell">Lump sum: a prepayment position is registered for the period, with the amount and the vendor.</td>
+            <td>Platform</td><td>A second lump sum for the same vendor and period tops up rather than duplicating.</td></tr>
+          <tr><td>4</td><td class="wrapcell">Lump sum: approval routes at the level the amount demands, typically CFO.</td>
+            <td>Treasury, CFO</td><td>Limits apply exactly as elsewhere; nothing about scale bypasses the hierarchy.</td></tr>
+          <tr><td>5</td><td class="wrapcell">Lump sum: it is paid and the payment is recorded against the position. Terms on these vendors can be as short as two working days.</td>
+            <td>Platform</td><td>Short terms are surfaced on arrival, not discovered late.</td></tr>
+          <tr><td>6</td><td class="wrapcell">Shipment: matched like an ordinary invoice, then drawn down against the open position for that vendor and period.</td>
+            <td>Platform</td><td>Consumed percentage recalculated on every drawdown.</td></tr>
+          <tr><td>7</td><td class="wrapcell">Balance thresholds are evaluated: approaching the limit warns treasury; exceeding it flags for review with the overage stated.</td>
+            <td>Platform, treasury</td><td>The excess is an unsecured payable against a vendor already paid in advance, and is treated as such.</td></tr>
+          <tr><td>8</td><td class="wrapcell">Approval, AP rules, Sage creation and payment feedback run as for any invoice.</td>
+            <td>Approver, Platform</td><td>Standard controls.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Edge cases</h3>
+    <div class="tablewrap">
+      <table class="ec">
+        <caption>Prepayments — edge case register</caption>
+        <thead><tr><th>ID</th><th>Condition</th><th>Required handling</th><th>Enforced at</th></tr></thead>
+        <tbody>
+          <tr><td>PRE-01</td><td class="wrapcell">A second lump sum arrives for the same vendor</td>
+            <td>It tops up the existing position rather than opening a duplicate, and consumption is recalculated against the new total.</td><td>Step 3</td></tr>
+          <tr><td>PRE-02</td><td class="wrapcell">Shipments approach the prepaid amount</td>
+            <td>Treasury is warned while there is still time to act, not after the balance has gone.</td><td>Step 7</td></tr>
+          <tr><td>PRE-03</td><td class="wrapcell">Shipments exceed the prepaid amount</td>
+            <td>Flagged for review with the overage stated, because the excess is effectively unsecured credit to a vendor already paid.</td><td>Step 7</td></tr>
+          <tr><td>PRE-04</td><td class="wrapcell">A very large invoice arrives from a prepaid vendor</td>
+            <td>Size alone does not make it a prepayment. The document must say so; otherwise it is an ordinary true-up.</td><td>Step 2</td></tr>
+          <tr><td>PRE-05</td><td class="wrapcell">Payment falls due in two working days</td>
+            <td>Surfaced on arrival. A prepayment sitting unnoticed in a queue has a real cost with these vendors.</td><td>Step 5</td></tr>
+          <tr><td>PRE-06</td><td class="wrapcell">The document does not name its period</td>
+            <td>The period is inferred from the invoice date so the prepayment lands against the right month rather than being left unassigned.</td><td>Step 2</td></tr>
+          <tr><td>PRE-07</td><td class="wrapcell">A shipment arrives with no open prepayment</td>
+            <td>Treated as an ordinary invoice — matched, approved, posted — rather than failing because a balance was expected.</td><td>Step 6</td></tr>
+          <tr><td>PRE-08</td><td class="wrapcell">A quarterly true-up brings roughly three thousand invoices at once</td>
+            <td>Processed as a set within performance targets; the queue does not become unusable during a true-up window.</td><td>NFR-1, NFR-2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Acceptance criteria</h3>
+    <ul class="col">
+      <li>A lump sum registers a position, routes to CFO approval and records its payment against the period.</li>
+      <li>Shipment invoices reduce the open balance and the consumed percentage is correct after each one.</li>
+      <li>Crossing the warning threshold notifies treasury; crossing the balance flags the document with the overage.</li>
+      <li>An eight-figure true-up is not misclassified as a lump sum.</li>
+    </ul>
+  </div>
+
+  <!-- ==================== 10. CREDITS ==================== -->
+  <div class="doctype">
+    <div class="spec"><span class="code">CR</span><h2>Section 10 · Credits</h2></div>
+    <p class="define">A document that reverses an invoice already booked. It arrives looking like
+      an invoice — often titled "cancellation invoice" — with a negative total. Sage builds the
+      credit memo from the original invoice's lines, so the original document number is not
+      optional.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Recognised by</dt><dd>Negative total, or cancellation wording</dd></div>
+      <div class="fact"><dt>Owned by</dt><dd>Processor, then the AP team</dd></div>
+      <div class="fact"><dt>Becomes in Sage</dt><dd>Purchase credit memo <span class="num">PCM######</span></dd></div>
+      <div class="fact"><dt>Stops for a person</dt><dd>The original invoice reference, then AP review — always</dd></div>
+    </dl>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Negative or cancellation document arrives"] --> B["Read header and line detail"]
+    B --> C{"Which invoice does this reverse?"}
+    C -->|"stated and valid"| D["Reference the original purchase invoice"]
+    C -->|"missing or malformed"| Q["Stop and ask a person"]
+    Q --> D
+    D --> E["AP review — every credit, without exception"]
+    E --> F["Create the credit memo in Sage from the original lines"]
+    F --> G{"Is a replacement invoice expected?"}
+    G -->|"yes"| H["Park it visibly until the replacement arrives"]
+    G -->|"no, standalone adjustment"| I["Close the credit"]
+    H --> J["Clears automatically when the rebill lands"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef exc fill:#FBEDE6,stroke:#A6571B,color:#6B3510
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    class E,H hold
+    class Q exc
+    class F sage
+</pre>
+      </div>
+      <figcaption><b>Credit.</b> Nothing about a credit is automatic — every one passes AP before Sage.</figcaption>
+      <div class="legend">
+        <span><i class="swatch sw-std"></i> automatic step</span>
+        <span><i class="swatch sw-hold"></i> a person must decide</span>
+        <span><i class="swatch sw-exc"></i> stops and asks</span>
+        <span><i class="swatch sw-auto"></i> Sage X3</span>
+      </div>
+    </figure>
+
+    <h3>Process steps</h3>
+    <div class="tablewrap">
+      <table class="steps">
+        <caption>Credits — required behaviour, step by step</caption>
+        <thead><tr><th>Step</th><th>What happens</th><th>Actor</th><th>Control enforced</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="wrapcell">A negative total or cancellation wording routes the document to credits ahead of every other rule.</td>
+            <td>Platform</td><td>A negative document can never be posted as an invoice.</td></tr>
+          <tr><td>2</td><td class="wrapcell">The original purchase invoice number is identified from the document.</td>
+            <td>Platform</td><td>Validated against the Sage numbering convention before anything is created.</td></tr>
+          <tr><td>3</td><td class="wrapcell">If it is missing or malformed, processing stops and asks. The platform does not infer which invoice is being reversed.</td>
+            <td>Processor</td><td>Guessing would credit the wrong invoice, and that error compounds through the settlement chain.</td></tr>
+          <tr><td>4</td><td class="wrapcell">The credit passes AP review. Every credit, including standalone goodwill adjustments.</td>
+            <td>AP team</td><td>Not rule-driven and not skippable (FR-60).</td></tr>
+          <tr><td>5</td><td class="wrapcell">The credit memo is created in Sage, which pulls the lines from the referenced original invoice.</td>
+            <td>Platform</td><td>The returned PCM is written back onto the platform record.</td></tr>
+          <tr><td>6</td><td class="wrapcell">If a replacement invoice is expected, the credit parks visibly in the queue AP uses for exactly this.</td>
+            <td>AP team</td><td>It clears automatically when the rebill arrives; nobody has to remember it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Edge cases</h3>
+    <div class="tablewrap">
+      <table class="ec">
+        <caption>Credits — edge case register</caption>
+        <thead><tr><th>ID</th><th>Condition</th><th>Required handling</th><th>Enforced at</th></tr></thead>
+        <tbody>
+          <tr><td>CR-01</td><td class="wrapcell">The credit does not say what it reverses</td>
+            <td>Processing stops and asks. Guessing would credit the wrong invoice and the error compounds down the chain.</td><td>Step 3</td></tr>
+          <tr><td>CR-02</td><td class="wrapcell">The referenced number is malformed</td>
+            <td>Checked against the Sage convention before anything is created, so a typo does not become a posted document.</td><td>Step 2</td></tr>
+          <tr><td>CR-03</td><td class="wrapcell">One credit covers several vendors</td>
+            <td>Credited invoices are identified individually and totals split per vendor, rather than one lump against whichever vendor is named first.</td><td>Step 2</td></tr>
+          <tr><td>CR-04</td><td class="wrapcell">The replacement invoice has not arrived</td>
+            <td>The credit parks visibly and clears automatically when the replacement comes in.</td><td>Step 6</td></tr>
+          <tr><td>CR-05</td><td class="wrapcell">The credit is genuinely standalone</td>
+            <td>A goodwill adjustment with no replacement still requires an AP release.</td><td>Step 4</td></tr>
+          <tr><td>CR-06</td><td class="wrapcell">A cancellation arrives from a settlement vendor</td>
+            <td>Treated as a credit first, because the negative total is unambiguous; its re-invoice is picked up separately as a rebill.</td><td>Step 1 · §11</td></tr>
+          <tr><td>CR-07</td><td class="wrapcell">The original invoice is in a closed period</td>
+            <td>Routed to AP with the closed-period condition stated. The platform does not decide period questions.</td><td>Step 4</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Acceptance criteria</h3>
+    <ul class="col">
+      <li>A credit with no original reference cannot reach Sage; the gate names what is needed.</li>
+      <li>A malformed reference is refused with the expected format shown.</li>
+      <li>Every credit appears in AP review regardless of amount.</li>
+      <li>A parked credit clears when its rebill arrives, without human action.</li>
+    </ul>
+  </div>
+
+  <!-- ==================== 11. REBILLS ==================== -->
+  <div class="doctype">
+    <div class="spec"><span class="code">RB</span><h2>Section 11 · Rebills</h2></div>
+    <p class="define">Settlement vendors invoice provisionally, then settle at a final price —
+      month-end, in the second month, or reaching back three months. The provisional invoice is
+      credited and the goods re-invoiced at the settled price. The rebill's job is to close a
+      three-document chain, and today that chain breaks.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Recognised by</dt><dd>A settlement vendor re-invoicing at a settled price</dd></div>
+      <div class="fact"><dt>Owned by</dt><dd>Processor, approver, AP for closed periods</dd></div>
+      <div class="fact"><dt>Becomes in Sage</dt><dd>Purchase invoice linked to the credit memo</dd></div>
+      <div class="fact"><dt>Stops for a person</dt><dd>The credit memo reference, approval, and AP if the period is closed</dd></div>
+    </dl>
+
+    <div class="note">
+      <b>The static field.</b> This is the gap the business named directly: <em>"we can link the
+      original PIN to the credit memo, but we can't currently link the rebill to either one — you
+      lose that third link."</em> The platform carries a dedicated field on the rebill holding the
+      purchase credit memo it settles, so original invoice, credit and rebill are provable in one
+      place (<span class="num">FR-62</span>). It is a gate: no reference, no chain.
+    </div>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Settlement vendor re-invoices at the settled price"] --> B["Read header and line detail"]
+    B --> C{"Which credit memo does this settle?"}
+    C -->|"missing"| Q["Stop and ask for the credit memo"]
+    Q --> D["Link original invoice, credit memo and rebill as one chain"]
+    C -->|"stated"| D
+    D --> E["Match against the purchase order"]
+    E --> F["Route for approval"]
+    F --> G{"Does the settlement reach a closed period?"}
+    G -->|"yes"| H["AP decides, with the closed-period condition stated"]
+    G -->|"no"| I["Create the purchase invoice in Sage"]
+    H --> I
+    I --> J{"Is the whole settlement in?"}
+    J -->|"more still to come"| K["Chain stays open showing what is outstanding"]
+    J -->|"complete"| L["Chain closed with all three Sage numbers on it"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef exc fill:#FBEDE6,stroke:#A6571B,color:#6B3510
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    class F,H,K hold
+    class Q exc
+    class I,L sage
+</pre>
+      </div>
+      <figcaption><b>Rebill.</b> The chain is the deliverable — the invoice is only how it gets there.</figcaption>
+      <div class="legend">
+        <span><i class="swatch sw-std"></i> automatic step</span>
+        <span><i class="swatch sw-hold"></i> a person must decide</span>
+        <span><i class="swatch sw-exc"></i> stops and asks</span>
+        <span><i class="swatch sw-auto"></i> Sage X3</span>
+      </div>
+    </figure>
+
+    <h3>Process steps</h3>
+    <div class="tablewrap">
+      <table class="steps">
+        <caption>Rebills — required behaviour, step by step</caption>
+        <thead><tr><th>Step</th><th>What happens</th><th>Actor</th><th>Control enforced</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="wrapcell">The vendor's settlement marking, plus a re-invoice at a settled price, routes the document here.</td>
+            <td>Platform</td><td>The marking lives on the supplier profile. A good share of these vendors are intercompany.</td></tr>
+          <tr><td>2</td><td class="wrapcell">The purchase credit memo this rebill settles is captured in a dedicated field and validated.</td>
+            <td>Processor</td><td>Gate. Format enforced as PCM plus six digits; no reference means no chain (FR-62).</td></tr>
+          <tr><td>3</td><td class="wrapcell">Original invoice, credit memo and rebill are linked as one chain, at the settled price.</td>
+            <td>Platform</td><td>All three Sage numbers on one record.</td></tr>
+          <tr><td>4</td><td class="wrapcell">Matching runs against the purchase order as for any PO invoice.</td>
+            <td>Platform</td><td>Settled price replaces provisional; the difference is visible.</td></tr>
+          <tr><td>5</td><td class="wrapcell">Approval routes by hierarchy and limit.</td>
+            <td>Approver</td><td>Standard controls.</td></tr>
+          <tr><td>6</td><td class="wrapcell">If the settlement reaches into a closed accounting period, the document routes to AP with that condition stated.</td>
+            <td>AP team</td><td>The platform does not decide period questions; it presents them (FR-64).</td></tr>
+          <tr><td>7</td><td class="wrapcell">The purchase invoice is created in Sage and the returned PIN completes the chain.</td>
+            <td>Platform</td><td>Chain integrity is reportable: complete chains versus missing links.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Edge cases</h3>
+    <div class="tablewrap">
+      <table class="ec">
+        <caption>Rebills — edge case register</caption>
+        <thead><tr><th>ID</th><th>Condition</th><th>Required handling</th><th>Enforced at</th></tr></thead>
+        <tbody>
+          <tr><td>RB-01</td><td class="wrapcell">Settlement reaches back into a closed period</td>
+            <td>The platform does not decide. It routes to AP with the closed-period condition stated, and waits.</td><td>Step 6</td></tr>
+          <tr><td>RB-02</td><td class="wrapcell">Settlement arrives in pieces across several months</td>
+            <td>The chain stays open and shows what is still outstanding, rather than appearing complete after the first piece lands.</td><td>Step 7</td></tr>
+          <tr><td>RB-03</td><td class="wrapcell">The rebill arrives before the credit</td>
+            <td>The chain shows the gap explicitly, so it is obvious a credit is expected rather than the rebill looking like an unrelated new invoice.</td><td>Steps 2, 3</td></tr>
+          <tr><td>RB-04</td><td class="wrapcell">The settled price is lower than the provisional</td>
+            <td>The rebill is smaller than the original and the net effect is visible on the chain, so the vendor position reads correctly at a glance.</td><td>Step 4</td></tr>
+          <tr><td>RB-05</td><td class="wrapcell">Somebody asks about it six months later</td>
+            <td>Original, credit and rebill are one linked chain with all three Sage numbers. That is the audit answer before the question is asked.</td><td>Step 3</td></tr>
+          <tr><td>RB-06</td><td class="wrapcell">The credit memo reference is mistyped</td>
+            <td>Refused against the Sage format before the chain is written, with the expected shape shown.</td><td>Step 2</td></tr>
+          <tr><td>RB-07</td><td class="wrapcell">A retro settlement reaches back three months across two companies</td>
+            <td>The chain records the company on each document so intercompany settlement remains reportable.</td><td>Steps 3, 6</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Acceptance criteria</h3>
+    <ul class="col">
+      <li>A rebill cannot link its chain until the credit memo it settles is recorded.</li>
+      <li>A completed chain shows the original PIN, the PCM and the rebill PIN together.</li>
+      <li>An incomplete chain states exactly which link is missing.</li>
+      <li>A closed-period rebill appears in AP review with the condition named.</li>
+      <li>Chain integrity is reportable across all rebills, not only inspectable one at a time.</li>
+    </ul>
+  </div>
+
+  <!-- ==================== 12. CROSS-CUTTING ==================== -->
+  <section>
+    <p class="kicker">Section 12</p>
+    <h2>Cross-cutting logic and controls</h2>
+    <div class="col">
+      <p>Behaviour that applies to every document type, regardless of which flow it is in.</p>
+    </div>
+
+    <h3>Matching (FR-30 – FR-36)</h3>
+    <ul class="col">
+      <li>Match type is taken from the purchase-order line, not decided by the platform. Sage
+        carries 2-Way or 3-Way per line.</li>
+      <li>Three-way matching is at <b>receipt level</b>, and the unique key for a receipt is the
+        <b>ship date and BOL pair</b> — this is what makes a thousand-receipt monthly summary
+        tractable.</li>
+      <li>Quantity and price tolerances are configuration, set per company and optionally per
+        vendor.</li>
+      <li>A partial receipt matches partially, and the remaining quantity stays visible on the
+        order rather than closing it.</li>
+      <li>Unit-of-measure conversions on the order (pounds to long tons, for example) are applied
+        from Sage's own conversion, never recalculated locally.</li>
+    </ul>
+
+    <h3>Coding and templates (FR-26, FR-28)</h3>
+    <ul class="col">
+      <li>Matched lines are coded from the purchase order. Unmatched lines are coded from a
+        standing template, or by hand as a last resort.</li>
+      <li>Templates are built and maintained by the AP team, not by developers. A template carries
+        the full coding block and a description; a processor picks one, enters the amount, and
+        submits.</li>
+      <li>Every coding value is validated against the live Sage reference lists at submission, so
+        a code retired in Sage cannot be posted from here.</li>
+    </ul>
+
+    <h3>AP final review (FR-44)</h3>
+    <div class="col">
+      <p>AP final review is a rule-driven control point. The rules are configuration and start
+        from what the business already does today: amount above a threshold, a closed accounting
+        period, every credit, a new vendor's first invoice, a variance released by a processor, and
+        any vendor the AP team names.</p>
+    </div>
+    <div class="note">
+      <b>Open decision D-02.</b> In session 002 the business stated <em>"everything has to hit this
+      final AP review before it comes into Sage."</em> The platform is built rule-driven rather
+      than universal, because universal review makes AP a bottleneck on every document and removes
+      most of the benefit. Both are one configuration change apart. This needs an explicit business
+      decision before UAT — see §17.
+    </div>
+
+    <h3>Duplicate and integrity controls</h3>
+    <ul class="col">
+      <li>Duplicates are refused on vendor, invoice number and amount together
+        (<span class="num">FR-12</span>).</li>
+      <li>A purchase order already consumed by another invoice cannot be attached again, and the
+        holder is named.</li>
+      <li>Net plus taxes plus freight must equal gross before submission
+        (<span class="num">FR-27</span>).</li>
+      <li>Writes to Sage are idempotent on platform ID; a timeout retry cannot create a second
+        document.</li>
+      <li>Nothing is deleted. Cancellation and out-of-scope marking are states with reasons, and
+        the record remains searchable.</li>
+    </ul>
+
+    <h3>Search and the click-through contract (FR-70 – FR-72)</h3>
+    <div class="col">
+      <p>Search covers header fields with exact, wildcard and range operators, and line-level
+        fields where the business needs them — account, division, project, site.</p>
+      <p>Every count displayed anywhere in the platform — a dashboard tile, a queue badge, a
+        sub-queue chip — carries the exact filter that produced it, and clicking it lands on those
+        documents. This is a hard contract, not a convention: a count you cannot click through to
+        is a defect. In the prototype it is enforced by 539 automated invariant checks on every
+        displayed number.</p>
+    </div>
+
+    <h3>Audit trail (FR-46, FR-83)</h3>
+    <ul class="col">
+      <li>Every state change, field edit, approval, rejection, release and Sage write is recorded
+        with timestamp, actor and message.</li>
+      <li>The document's own history is readable from the document: when it arrived, when it was
+        classified and at what confidence, every processing step, who approved it, which Sage
+        numbers were created and when payment was confirmed.</li>
+      <li>Configuration changes — routing rules, thresholds, limits, templates, users — are audited
+        with before and after values.</li>
+      <li>Audit records are append-only and retained per the retention policy
+        (<span class="num">NFR-11</span>).</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 13. REPORTING ==================== -->
+  <section>
+    <p class="kicker">Section 13</p>
+    <h2>Reporting and analytics</h2>
+    <div class="col">
+      <p>The business asked for specific numbers: <em>"how many documents have been processed in
+        the last month, last quarter, how many were auto-matched, how many were manually logged in,
+        how many were PO, how many were non-PO"</em> — with vendor-level breakdown.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <caption>Required views</caption>
+        <thead><tr><th>View</th><th>Answers</th><th>Grain</th></tr></thead>
+        <tbody>
+          <tr><td>Volume</td><td>Documents received, processed and posted</td><td>Day, month, quarter · by company, type, vendor</td></tr>
+          <tr><td>Automation</td><td>Auto-matched versus manually worked; classification accuracy; straight-through rate</td><td>Month · by company, type, vendor</td></tr>
+          <tr><td>Cycle time</td><td>Arrival to approval, approval to Sage, Sage to paid</td><td>Median and 90th percentile</td></tr>
+          <tr><td>Exceptions</td><td>What is stuck, where, for how long, and who owns it</td><td>Live · by queue and gate</td></tr>
+          <tr><td>Approvals</td><td>Pending by approver and age; escalations; email approvals</td><td>Live</td></tr>
+          <tr><td>Prepayment positions</td><td>Open balance, consumed percentage, projected exhaustion</td><td>Live · per vendor and period</td></tr>
+          <tr><td>Chain integrity</td><td>Settlement chains complete versus links missing</td><td>Live · per vendor</td></tr>
+          <tr><td>Vendor detail</td><td>Volume, exception rate and cycle time per vendor</td><td>Month</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <p>Every figure on every view is clickable through to the documents behind it, and every
+        view exports to spreadsheet.</p>
+    </div>
+  </section>
+
+  <!-- ==================== 14. NFR ==================== -->
+  <section>
+    <p class="kicker">Section 14</p>
+    <h2>Non-functional requirements</h2>
+    <div class="tablewrap">
+      <table>
+        <caption>Non-functional requirements</caption>
+        <thead><tr><th>Ref</th><th>Requirement</th><th>Target</th></tr></thead>
+        <tbody>
+          <tr><td>NFR-1</td><td class="wrapcell">Interactive response — queue lists, search, document open</td>
+            <td>Under 1.5 s at the 95th percentile with production data volumes</td></tr>
+          <tr><td>NFR-2</td><td class="wrapcell">Large document handling</td>
+            <td>A 1,000-line document opens, matches and submits without pagination workarounds. No line ceiling anywhere in the platform.</td></tr>
+          <tr><td>NFR-3</td><td class="wrapcell">Throughput</td>
+            <td>Sustained 3,500 documents per month with peaks of 3,000 in a true-up window, without queue degradation</td></tr>
+          <tr><td>NFR-4</td><td class="wrapcell">Extraction turnaround</td>
+            <td>Median under 2 minutes from arrival to extracted and classified</td></tr>
+          <tr><td>NFR-5</td><td class="wrapcell">Availability</td>
+            <td>99.5% during business hours (see SOW for the option-specific SLA)</td></tr>
+          <tr><td>NFR-6</td><td class="wrapcell">Recovery</td>
+            <td>RPO 15 minutes · RTO 4 hours. Restore tested at least quarterly.</td></tr>
+          <tr><td>NFR-7</td><td class="wrapcell">Authentication</td>
+            <td>Single sign-on against the corporate identity provider, MFA enforced by policy. No local passwords.</td></tr>
+          <tr><td>NFR-8</td><td class="wrapcell">Integration resilience</td>
+            <td>Idempotent writes, bounded retry with backoff, a visible dead-letter state, and daily reconciliation of platform records against Sage documents</td></tr>
+          <tr><td>NFR-9</td><td class="wrapcell">Authorisation</td>
+            <td>Role and company scoped. A user sees only the companies they are entitled to.</td></tr>
+          <tr><td>NFR-10</td><td class="wrapcell">Data protection</td>
+            <td>Encrypted in transit and at rest. Secrets in a managed vault. No financial data in logs.</td></tr>
+          <tr><td>NFR-11</td><td class="wrapcell">Retention</td>
+            <td>Documents and audit retained 7 years by default, configurable per company for Canadian and UK requirements</td></tr>
+          <tr><td>NFR-12</td><td class="wrapcell">Accessibility</td>
+            <td>WCAG 2.1 AA: contrast, keyboard operability, focus visibility, screen-reader labelling. Verified by automated audit.</td></tr>
+          <tr><td>NFR-13</td><td class="wrapcell">Browser support</td>
+            <td>Current Edge, Chrome, Firefox and Safari. Responsive from 1280 px upward; usable on tablet for approvals.</td></tr>
+          <tr><td>NFR-14</td><td class="wrapcell">Observability</td>
+            <td>Structured logs, metrics and traces; alerting on integration failure, queue age and extraction backlog</td></tr>
+          <tr><td>NFR-15</td><td class="wrapcell">Data residency</td>
+            <td>Configurable by region. Canadian and UK entity data may be pinned to region if policy requires (see SOW hosting options).</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== 15. ARCHITECTURE ==================== -->
+  <section>
+    <p class="kicker">Section 15</p>
+    <h2>Architecture</h2>
+    <div class="col">
+      <p>Four layers, one integration boundary, and a deliberately small number of moving parts.
+        Sage X3 stays the system of record; the platform is where documents are worked before they
+        become Sage documents.</p>
+    </div>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    subgraph SRC["Sources"]
+      M["AP mailbox"]
+      SC["Scanners and shared folders"]
+    end
+
+    subgraph PLAT["AP Invoice Platform"]
+      IN["Intake service"]
+      EX["Extraction service"]
+      CL["Classifier and routing rules"]
+      EN["Processing engine — the five flows"]
+      AP["Approval and AP review service"]
+      AD["Sage adapter"]
+      DB[("Operational database")]
+      BL[("Document store — images")]
+      UI["Web application"]
+    end
+
+    subgraph EXT["External systems"]
+      SG["Sage X3"]
+      ID["Corporate identity provider"]
+      OCR["Document intelligence service"]
+    end
+
+    M --> IN
+    SC --> IN
+    IN --> BL
+    IN --> EX
+    EX --> OCR
+    EX --> CL
+    CL --> EN
+    EN --> AP
+    EN --> AD
+    AD --> SG
+    SG --> AD
+    EN --> DB
+    UI --> DB
+    UI --> BL
+    UI --> ID
+    AD --> DB
+
+    classDef ext fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    classDef store fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    class SG,ID,OCR ext
+    class DB,BL store
+</pre>
+      </div>
+      <figcaption><b>System context.</b> One intake path, one Sage boundary, one place state lives.</figcaption>
+      <div class="legend">
+        <span><i class="swatch sw-std"></i> platform component</span>
+        <span><i class="swatch sw-hold"></i> data store</span>
+        <span><i class="swatch sw-auto"></i> external system</span>
+      </div>
+    </figure>
+
+    <h3>Layers and responsibilities</h3>
+    <div class="tablewrap">
+      <table>
+        <caption>Layers</caption>
+        <thead><tr><th>Layer</th><th>Holds</th><th>Never does</th></tr></thead>
+        <tbody>
+          <tr><td>Web application</td><td>Queues, document detail, search, dashboards, administration. Server-rendered application shell with a typed API client.</td>
+            <td>Business rules. The UI asks; it does not decide.</td></tr>
+          <tr><td>API and services</td><td>Intake, extraction orchestration, classification, the engine, approvals, search, reporting.</td>
+            <td>Hold state in memory between requests.</td></tr>
+          <tr><td>Processing engine</td><td>The five flows as declared step machines: each step knows its gate, its precondition, its action and its audit marker.</td>
+            <td>Encode a flow in scattered conditionals. A flow is data, so it is inspectable and testable.</td></tr>
+          <tr><td>Sage adapter</td><td>Every call to Sage, behind one typed interface: reference lists, vendors, orders, receipts, document creation, validation, payments.</td>
+            <td>Leak Sage-specific detail into the engine.</td></tr>
+          <tr><td>Data</td><td>Relational operational store for documents, lines, positions, chains, rules, users and audit. Object store for images.</td>
+            <td>Duplicate the general ledger.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Why the engine is data-driven</h3>
+    <div class="col">
+      <p>Each document type's flow is a declared list of steps. A step states whether it is a human
+        gate, what makes it complete, what it does when it runs, and what it records. The canonical
+        state of a document is its status plus its audit markers — never a hidden variable — so the
+        same flow definition drives the queues, the status display, the dashboards and the tests.</p>
+      <p>The practical consequence: adding a control (the rebill's credit-memo gate, for example)
+        is one step declaration plus one endpoint, and every screen and count that depends on it
+        updates without change. That is what keeps a platform with this many exceptions
+        maintainable.</p>
+    </div>
+
+    <h3>Data model — core entities</h3>
+    <div class="tablewrap">
+      <table>
+        <caption>Core entities</caption>
+        <thead><tr><th>Entity</th><th>Purpose</th><th>Key relationships</th></tr></thead>
+        <tbody>
+          <tr><td>Document</td><td>The invoice, credit or rebill: header fields, company, queue, classification, confidence, status, Sage numbers</td><td>Has many lines, audit events, approvals</td></tr>
+          <tr><td>Line</td><td>A single invoice line with its coding block, quantity, price and match state</td><td>Belongs to a document; references a PO line and receipts</td></tr>
+          <tr><td>Routing rule</td><td>Priority, condition, target queue, enabled — plus the confidence threshold</td><td>Applied at classification</td></tr>
+          <tr><td>Template</td><td>A standing coding pattern for suppliers with no purchase order</td><td>Applied to lines</td></tr>
+          <tr><td>Approval</td><td>Who must approve, limit, decision, timestamp, delegation</td><td>Belongs to a document</td></tr>
+          <tr><td>Prepayment position</td><td>Vendor, period, amount, consumed, thresholds</td><td>Drawn down by documents</td></tr>
+          <tr><td>Settlement chain</td><td>Original invoice, credit memo, rebill and their Sage numbers</td><td>Links three documents</td></tr>
+          <tr><td>Audit event</td><td>Timestamp, actor, action, field, message — append-only</td><td>Belongs to a document or a configuration object</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Integration patterns</h3>
+    <ul class="col">
+      <li><b>Reads on use.</b> Vendor, order, receipt and reference data are read at the moment
+        they are needed, so the platform never shows a stale copy. Reference lists are cached with
+        a short life and refreshed daily.</li>
+      <li><b>Synchronous write with confirmation.</b> Document creation is a single call that
+        returns the Sage number, which is written onto the record immediately.</li>
+      <li><b>Idempotency.</b> Every write carries the platform ID as its key. Sage's own validation
+        feed already carries that ID today, which is what makes this safe.</li>
+      <li><b>Bounded retry and dead-letter.</b> Failures retry with backoff, then surface as a
+        visible state with the error — never a silent loss.</li>
+      <li><b>Daily reconciliation.</b> A scheduled job compares platform records against Sage
+        documents and reports any divergence. This is the control that catches the failure nobody
+        noticed.</li>
+    </ul>
+
+    <h3>Environments</h3>
+    <ul class="col">
+      <li><b>Development</b> — Alferix-side, mock Sage adapter.</li>
+      <li><b>Test / UAT</b> — connected to a Sage X3 test instance with representative data.
+        Client-accessible.</li>
+      <li><b>Production</b> — connected to Sage X3 production. Access restricted; all changes
+        released through the pipeline.</li>
+    </ul>
+    <div class="col">
+      <p>Infrastructure is defined as code so all three are provisioned identically, which is also
+        what makes the two hosting options in the SOW genuinely interchangeable.</p>
+    </div>
+  </section>
+
+  <!-- ==================== 16. MIGRATION ==================== -->
+  <section>
+    <p class="kicker">Section 16</p>
+    <h2>Migration and cutover</h2>
+    <div class="col">
+      <p>Cutover is by company, not big bang. Symantha's instinct was right: automation is earned
+        <em>"probably one company at a time."</em></p>
+    </div>
+    <div class="tablewrap">
+      <table class="steps">
+        <caption>Cutover sequence</caption>
+        <thead><tr><th>Stage</th><th>What happens</th><th>Exit condition</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="wrapcell">Configuration migrated: users, limits, approval hierarchy, vendor markings, templates, reference-list mappings.</td>
+            <td>AP administrator signs off that configuration matches today's behaviour.</td></tr>
+          <tr><td>2</td><td class="wrapcell">Open items migrated: documents in flight in Blue Creek are either completed there or re-entered here, by agreement. No historical posting is replayed.</td>
+            <td>Zero documents in flight in two systems at once.</td></tr>
+          <tr><td>3</td><td class="wrapcell">History: closed Blue Creek documents remain accessible in Blue Creek read-only for its retention period. Images for open chains are brought across.</td>
+            <td>Audit can answer a six-month-old question from one of the two systems.</td></tr>
+          <tr><td>4</td><td class="wrapcell">Parallel run on one company with a low document volume, threshold set high so most documents pass through a person.</td>
+            <td>Two weeks with no classification error reaching Sage.</td></tr>
+          <tr><td>5</td><td class="wrapcell">Company-by-company rollout, raising the automation threshold as measured accuracy allows.</td>
+            <td>All seven companies live; automation at target.</td></tr>
+          <tr><td>6</td><td class="wrapcell">Blue Creek decommissioned.</td>
+            <td>Client confirmation; licence terminated.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== 17. OPEN DECISIONS ==================== -->
+  <section>
+    <p class="kicker">Section 17</p>
+    <h2>Open decisions</h2>
+    <div class="col">
+      <p>These are the questions whose answers change the build. Each needs an owner and a date
+        before the corresponding phase starts.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <caption>Decisions required</caption>
+        <thead><tr><th>Ref</th><th>Decision</th><th>Impact if unresolved</th><th>Owner · needed by</th></tr></thead>
+        <tbody>
+          <tr><td>D-01</td><td class="wrapcell">Confirm the Sage X3 API surface and field-level contract. Our layouts are inferred from the export samples.</td>
+            <td>The adapter cannot be built to a firm contract; rework risk on every feed.</td><td>Net at Work with Alferix · end of discovery</td></tr>
+          <tr><td>D-02</td><td class="wrapcell">Is AP final review universal, or rule-driven as built?</td>
+            <td>Affects throughput, AP workload and the automation business case.</td><td>Symantha Schaeffer · before UAT</td></tr>
+          <tr><td>D-03</td><td class="wrapcell">Sales-channel code mapping. Sage codes are numeric (30, 41, 42, 43); our current labels are descriptive.</td>
+            <td>Line coding would post the wrong channel.</td><td>Symantha Schaeffer · before Sage adapter build</td></tr>
+          <tr><td>D-04</td><td class="wrapcell">Purchase-order numbering: is the sequence global or per company?</td>
+            <td>Order-number validation could refuse valid numbers.</td><td>Net at Work · before Non-PO flow build</td></tr>
+          <tr><td>D-05</td><td class="wrapcell">Approval hierarchy list and per-approver limits per company, as data.</td>
+            <td>Approval routing cannot be configured; UAT blocked.</td><td>AP team · before approvals build</td></tr>
+          <tr><td>D-06</td><td class="wrapcell">The template library: which suppliers, which coding.</td>
+            <td>Non-PO invoices fall back to manual coding — the very cost this replaces.</td><td>AP team · before UAT</td></tr>
+          <tr><td>D-07</td><td class="wrapcell">Sold-to name to company code mapping, including trading names.</td>
+            <td>Company determination holds documents for a person unnecessarily.</td><td>Symantha Schaeffer · before UAT</td></tr>
+          <tr><td>D-08</td><td class="wrapcell">Data residency for Canadian and UK entities.</td>
+            <td>Determines hosting region and which SOW option is viable.</td><td>H.J. Baker IT · before infrastructure build</td></tr>
+          <tr><td>D-09</td><td class="wrapcell">Email approval: keep it, and for whom?</td>
+            <td>Named as the one Blue Creek benefit worth preserving; affects approval build.</td><td>Symantha Schaeffer · before approvals build</td></tr>
+          <tr><td>D-10</td><td class="wrapcell">Tolerance thresholds for quantity and price variance.</td>
+            <td>Either too many exceptions or too few controls.</td><td>AP team · before UAT</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Retired requirement</h3>
+    <div class="col">
+      <p><b>Automatic purchase-order creation — retired.</b> An earlier requirement had the
+        platform generate the next purchase order. The sessions established this is not automatable:
+        orders originate at manual ordering sites and from IRT rail and truck line imports, with
+        quantities and prices set by people. The platform therefore asks for the order number and
+        shows the vendor's last order for reference. Retiring this removed a real risk of creating
+        orders nobody asked for.</p>
+    </div>
+  </section>
+
+  <!-- ==================== 18. GLOSSARY ==================== -->
+  <section>
+    <p class="kicker">Section 18</p>
+    <h2>Glossary</h2>
+    <div class="tablewrap">
+      <table>
+        <caption>Terms as used in this document</caption>
+        <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Blue Creek</td><td>The incumbent tool (Vision360) this platform replaces</td></tr>
+          <tr><td>BOL</td><td>Bill of lading. With the ship date, it uniquely identifies a receipt.</td></tr>
+          <tr><td>Gate</td><td>A step that cannot complete without a person. Gates are the work queues.</td></tr>
+          <tr><td>Netback / settlement vendor</td><td>A vendor who invoices provisionally then settles at a final price, producing a credit and a rebill</td></tr>
+          <tr><td>PCM</td><td>Sage purchase credit memo</td></tr>
+          <tr><td>PIN</td><td>Sage purchase invoice</td></tr>
+          <tr><td>Platform ID</td><td>The platform's own document number, which travels onto the Sage document</td></tr>
+          <tr><td>Park queue</td><td>Where AP holds a provisional invoice until its credit and rebill arrive</td></tr>
+          <tr><td>Rebill</td><td>A re-invoice at the settled price, following a credit</td></tr>
+          <tr><td>Straight-through</td><td>A document that reaches approval with no human edit</td></tr>
+          <tr><td>Supplier BP invoice</td><td>An invoice from a supplier who will never have a purchase order, coded from a template</td></tr>
+          <tr><td>True-up</td><td>A shipment invoice that draws down a prepayment, or a settlement at final price</td></tr>
+          <tr><td>Two-way / three-way match</td><td>Invoice against order, or invoice against order and receipt</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>Product requirements · AP Invoice Processing Platform · v1.0 draft</span>
+    <span>Prepared by Alferix for H.J. Baker &amp; Bro., LLC · companion document: Statement of Work</span>
+  </footer>
+
+</div>

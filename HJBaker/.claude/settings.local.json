@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:claude.ai)",
+      "Bash(python -)",
+      "Bash(grep -n \"^#\\\\{1,3\\\\} \" PRD.md)",
+      "Bash(grep -n \"^#\\\\{1,3\\\\} \\\\|^- \\\\*\\\\*\" sage-integration.md)",
+      "Bash(python -c ' *)",
+      "Bash(node -e \"const d=require\\('docx'\\); console.log\\('docx ok', Object.keys\\(d\\).length,'exports'\\)\")"
+    ]
+  }
+}

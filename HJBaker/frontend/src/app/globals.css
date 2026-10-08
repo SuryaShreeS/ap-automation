@@ -1,0 +1,32 @@
+/* Ported from the prototype's <helmet> styles. */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: #F6F7FB;
+  font-family: 'Manrope', system-ui, sans-serif;
+  color: #14163C;
+  overflow: hidden;
+}
+a { color: #2E3391; text-decoration: none; }
+a:hover { color: #262A78; }
+input, select { font-family: 'Manrope', sans-serif; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #C3CADD; border-radius: 5px; border: 2px solid #F6F7FB; }
+
+@keyframes ap-spin { to { transform: rotate(360deg); } }
+@keyframes ap-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(46, 51, 145, 0.35); }
+  50% { box-shadow: 0 0 0 6px rgba(46, 51, 145, 0.10); }
+}
+.ap-pulse { animation: ap-pulse 1.6s ease-in-out infinite; }
+.ap-spinner {
+  display: inline-block;
+  width: 11px; height: 11px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: ap-spin 0.6s linear infinite;
+  vertical-align: -1px;
+  margin-right: 6px;
+  opacity: 0.9;
+}

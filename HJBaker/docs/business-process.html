@@ -1,0 +1,870 @@
+<title>H.J. Baker · AP Business Process</title>
+
+<style>
+  :root {
+    color-scheme: light;
+    --paper:      #F7F7F4;
+    --plate:      #FFFFFF;
+    --band:       #EFEEE9;
+    --ink:        #12172B;
+    --navy:       #1F2A54;
+    --slate:      #555E72;
+    --faint:      #5F6778;
+    --ochre:      #A6571B;
+    --rule:       #DAD8D0;
+    --hold:       #8A6D05;
+    --hold-bg:    #FBF3DC;
+    --auto:       #1B6B4A;
+    --auto-bg:    #E6F2EB;
+
+    --display: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --body: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
+    --measure: 68ch;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --paper: #0E1220; --plate: #F1F0EC; --band: #171D30;
+      --ink: #EEEDE8; --navy: #C6CEE4; --slate: #A7AFC2; --faint: #8B93A6;
+      --ochre: #E09354; --rule: #2A3149;
+      --hold: #E3B94A; --hold-bg: #2A2410; --auto: #63C295; --auto-bg: #10241A;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #0E1220; --plate: #F1F0EC; --band: #171D30;
+    --ink: #EEEDE8; --navy: #C6CEE4; --slate: #A7AFC2; --faint: #8B93A6;
+    --ochre: #E09354; --rule: #2A3149;
+    --hold: #E3B94A; --hold-bg: #2A2410; --auto: #63C295; --auto-bg: #10241A;
+  }
+
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-size: 17px; line-height: 1.62;
+    margin: 0; padding: 0 clamp(18px, 5vw, 56px) 96px;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; }
+  .col { max-width: var(--measure); }
+
+  .masthead {
+    display: flex; flex-direction: column; gap: 18px;
+    padding: clamp(40px, 7vw, 84px) 0 30px; border-bottom: 2px solid var(--navy);
+  }
+  .eyebrow {
+    font-family: var(--display); font-size: 11px; font-weight: 650;
+    letter-spacing: .19em; text-transform: uppercase; color: var(--ochre);
+  }
+  h1 {
+    font-family: var(--display); font-weight: 680;
+    font-size: clamp(30px, 5.2vw, 50px); line-height: 1.04;
+    letter-spacing: -.022em; margin: 0; text-wrap: balance;
+  }
+  .standfirst { font-size: clamp(17px, 2vw, 20px); color: var(--slate); max-width: 62ch; margin: 0; }
+  .credit {
+    display: flex; gap: 22px; flex-wrap: wrap; padding-top: 6px;
+    font-family: var(--display); font-size: 12.5px; color: var(--faint);
+  }
+  .credit b { color: var(--ink); font-weight: 620; }
+
+  section { padding-top: clamp(44px, 6vw, 76px); }
+  h2 {
+    font-family: var(--display); font-weight: 660;
+    font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -.012em;
+    margin: 0 0 8px; text-wrap: balance;
+  }
+  h3 {
+    font-family: var(--display); font-weight: 640; font-size: 15.5px;
+    margin: 30px 0 8px; color: var(--navy);
+  }
+  .kicker {
+    font-family: var(--display); font-size: 11px; font-weight: 650;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--faint);
+    margin: 0 0 14px;
+  }
+  p { margin: 0 0 14px; }
+  .col > p:last-child { margin-bottom: 0; }
+  em { font-style: italic; color: var(--navy); }
+  .num { font-family: var(--mono); font-size: .93em; color: var(--ochre); font-weight: 600; }
+  ul, ol { margin: 0 0 14px; padding-left: 22px; }
+  li { margin-bottom: 7px; }
+  li::marker { color: var(--ochre); }
+
+  .doctype { padding-top: clamp(44px, 6vw, 72px); }
+  .spec {
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+    border-top: 2px solid var(--navy); padding-top: 16px; margin-bottom: 4px;
+  }
+  .code {
+    font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em;
+    color: #FFFFFF; background: var(--ochre); padding: 4px 9px; border-radius: 3px; flex: none;
+  }
+  .spec h2 { margin: 0; flex: 1 1 auto; min-width: 12ch; }
+  .define { font-size: 16.5px; color: var(--slate); max-width: 64ch; margin: 2px 0 20px; }
+
+  .facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    margin: 0 0 26px; border-radius: 4px; overflow: hidden;
+  }
+  .fact { background: var(--band); padding: 12px 14px; }
+  .fact dt {
+    font-family: var(--display); font-size: 10px; font-weight: 650;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--faint); margin-bottom: 5px;
+  }
+  .fact dd { margin: 0; font-size: 14.5px; line-height: 1.45; }
+
+  figure { margin: 26px 0 8px; }
+  .plate {
+    background: var(--plate); border: 1px solid var(--rule); border-radius: 5px;
+    padding: 22px 18px; overflow-x: auto;
+  }
+  .plate pre.mermaid { margin: 0; display: flex; justify-content: center; min-width: min-content; }
+  figcaption {
+    font-family: var(--display); font-size: 12px; color: var(--faint);
+    margin-top: 9px; display: flex; gap: 8px; align-items: baseline;
+  }
+  figcaption b { color: var(--navy); font-weight: 640; flex: none; }
+
+  .legend {
+    display: flex; gap: 18px; flex-wrap: wrap; margin: 14px 0 0;
+    font-family: var(--display); font-size: 12px; color: var(--faint);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .swatch { width: 12px; height: 12px; border-radius: 2px; border: 1px solid; flex: none; }
+  .sw-hold { background: #FBF3DC; border-color: #8A6D05; }
+  .sw-auto { background: #E6F2EB; border-color: #1B6B4A; }
+  .sw-exc  { background: #FBEDE6; border-color: #A6571B; }
+  .sw-std  { background: #FFFFFF; border-color: #1F2A54; }
+
+  .tablewrap { overflow-x: auto; margin: 0 0 20px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 480px; }
+  caption {
+    text-align: left; font-family: var(--display); font-size: 11px; font-weight: 650;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--faint); padding-bottom: 9px;
+  }
+  th {
+    text-align: left; font-family: var(--display); font-size: 11.5px; font-weight: 650;
+    letter-spacing: .05em; text-transform: uppercase; color: var(--faint);
+    border-bottom: 1.5px solid var(--navy); padding: 0 14px 7px 0; vertical-align: bottom;
+  }
+  td { padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  td:first-child {
+    font-family: var(--display); font-size: 14.5px; font-weight: 620;
+    color: var(--navy); white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  .mono-col { font-family: var(--mono); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+
+  /* edge-case list */
+  .cases { border-top: 1px solid var(--rule); margin-top: 8px; }
+  .case {
+    display: grid; grid-template-columns: minmax(180px, 30%) 1fr; gap: 4px 26px;
+    padding: 13px 0; border-bottom: 1px solid var(--rule);
+  }
+  .case .when {
+    font-family: var(--display); font-size: 14px; font-weight: 620; color: var(--navy);
+    line-height: 1.45;
+  }
+  .case .then { font-size: 15.5px; color: var(--ink); line-height: 1.5; }
+  @media (max-width: 620px) { .case { grid-template-columns: 1fr; gap: 2px; } }
+
+  .note {
+    border-left: 3px solid var(--ochre); padding: 2px 0 2px 18px; margin: 22px 0;
+    color: var(--navy); font-size: 16.5px; max-width: 64ch;
+  }
+  .note b { color: var(--ink); }
+
+  footer {
+    margin-top: clamp(52px, 7vw, 88px); padding-top: 20px; border-top: 2px solid var(--navy);
+    font-family: var(--display); font-size: 12.5px; color: var(--faint);
+    display: flex; gap: 20px; flex-wrap: wrap; justify-content: space-between;
+  }
+  a { color: var(--ochre); }
+  a:focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Business process review · prepared by Alferix</div>
+    <h1>Accounts payable at H.J. Baker</h1>
+    <p class="standfirst">Five kinds of document arrive in one mailbox, and each one has to be
+      handled differently. This is our understanding of that business — the documents, the
+      decisions, the awkward cases, and what Sage ends up holding.</p>
+    <div class="credit">
+      <span><b>Client</b> H.J. Baker &amp; Bro., LLC — established 1850</span>
+      <span><b>Scope</b> Accounts payable, seven operating companies</span>
+      <span><b>System of record</b> Sage X3</span>
+    </div>
+  </header>
+
+  <!-- ==================== 1. INTRODUCTION ==================== -->
+  <section>
+    <p class="kicker">Introduction</p>
+    <h2>What we set out to understand</h2>
+    <div class="col">
+      <p>H.J. Baker moves sulphur — by rail, by truck, by vessel — across seven operating
+        companies. Accounts payable sits at the end of that chain, turning whatever a vendor sends
+        into a posted document in Sage X3 and a payment that goes out on time.</p>
+      <p>Every payable document arrives the same way: a PDF attached to an email in the shared AP
+        mailbox. A railcar of molten sulphur, a month's office rent, a nine-million-dollar
+        prepayment, a cancellation, a price settlement — all of it lands in the same place, and
+        nothing about the delivery tells you which kind of document you are holding.</p>
+      <p>That is the heart of the problem. The current tool treats every document identically,
+        which means a person has to open each one and work out what it is before any real work can
+        start. And because everything is reviewed, nothing is reviewed carefully.</p>
+      <p>So before designing anything, we spent our time on one question: <em>what are the
+        genuinely different processes hiding inside that inbox?</em> The answer is five. They share
+        an arrival route and nothing else — different triggers, different checks, different people,
+        different documents at the end. This paper sets out each one as we understand it, together
+        with the awkward cases your team deals with in practice.</p>
+      <p>Two principles came out of those conversations and shaped everything that follows.
+        First, <strong>sorting and paperwork should be automatic</strong> — recognising a document
+        type, matching it, drafting it, numbering it. Second, <strong>judgement stays with
+        people</strong> — whether a purchase order is warranted, which invoice a credit reverses,
+        and whether to release the money. Those are not delays to be engineered away. They are
+        your controls.</p>
+    </div>
+  </section>
+
+  <!-- ==================== 2. COMPANIES ==================== -->
+  <section>
+    <p class="kicker">The organisation</p>
+    <h2>Seven operating companies, one mailbox</h2>
+    <div class="col">
+      <p>Before anything else, each document belongs to one of seven companies — and the vendor
+        rarely states which. It is determined by who the invoice is sold to, and that single fact
+        then drives the accounting entity, the tax treatment, the approval route, and every report
+        the business looks at.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <caption>Operating companies</caption>
+        <thead>
+          <tr><th>Code</th><th>Company</th><th>What typically arrives</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono-col">100</td><td>H.J. Baker</td><td>Corporate costs, rent, services, load lists</td></tr>
+          <tr><td class="mono-col">405</td><td>HJB Sulphur</td><td>The bulk of sulphur purchasing and rail movement</td></tr>
+          <tr><td class="mono-col">410</td><td>HJB Logistics</td><td>Freight, trucking, terminal handling</td></tr>
+          <tr><td class="mono-col">415</td><td>HJB Sulphur CAN</td><td>Canadian purchasing, GST and PST, Canadian dollars</td></tr>
+          <tr><td class="mono-col">420</td><td>HJB Sulphur Intl</td><td>International movement</td></tr>
+          <tr><td class="mono-col">435</td><td>HJB Sulphur UK</td><td>United Kingdom entity, VAT</td></tr>
+          <tr><td class="mono-col">900</td><td>HJB Canada</td><td>Canadian corporate costs</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <p>Because the company is inferred rather than stated, a mapping from the sold-to name to
+        the company code is maintained as a list your team owns. When a new trading name appears on
+        an invoice, that list is the single place it needs to be added.</p>
+    </div>
+  </section>
+
+  <!-- ==================== 3. DOCUMENT TYPES ==================== -->
+  <section>
+    <p class="kicker">The five processes</p>
+    <h2>The document types</h2>
+    <div class="col">
+      <p>These five are not a filing convention. Each one has its own trigger, its own checks, its
+        own people, and produces a different document in Sage.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <caption>Document types at a glance</caption>
+        <thead>
+          <tr><th>Type</th><th>Recognised by</th><th>Becomes in Sage</th><th>Always stops for</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>PO invoice</td><td>Quotes a purchase order number</td>
+              <td>Purchase invoice <span class="num">PIN######</span></td><td>Approval</td></tr>
+          <tr><td>Non-PO invoice</td><td>No purchase order quoted</td>
+              <td>Purchase invoice <span class="num">PIN######</span></td><td>PO decision, then approval</td></tr>
+          <tr><td>Prepayment</td><td>Vendor is marked as prepaid</td>
+              <td>Payment, then invoices drawing it down</td><td>Approval, usually at CFO level</td></tr>
+          <tr><td>Credit</td><td>Negative total or cancellation wording</td>
+              <td>Credit memo <span class="num">PCM######</span></td><td>Original invoice reference, then AP review</td></tr>
+          <tr><td>Rebill</td><td>Settlement vendor re-invoicing at settled price</td>
+              <td>Purchase invoice linked to the credit</td><td>Approval, and AP if the period is closed</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Vendor sends a document"] --> B["AP mailbox"]
+    B --> C{"What kind of document is this?"}
+
+    C -->|"purchase order quoted"| T1["PO invoice"]
+    C -->|"no purchase order"| T2["Non-PO invoice"]
+    C -->|"prepaid vendor"| T3["Prepayment"]
+    C -->|"negative or cancellation"| T4["Credit"]
+    C -->|"settled price"| T5["Rebill"]
+    C -->|"not clear enough"| MR["Held for a person to sort"]
+
+    MR --> T2
+
+    T1 --> AP["Approval"]
+    T2 --> AP
+    T3 --> AP
+    T5 --> AP
+    T4 --> RV["AP review · every credit"]
+
+    AP --> RC{"Does an AP rule flag this one?"}
+    RC -->|"no"| SG["Document created in Sage"]
+    RC -->|"yes"| RV2["AP final review"]
+    RV2 --> SG
+    RV --> SG
+    SG --> PD["Paid"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    classDef type fill:#FBEDE6,stroke:#A6571B,color:#6B3510
+    class MR,AP,RV,RV2 hold
+    class SG,PD sage
+    class T1,T2,T3,T4,T5 type
+</pre>
+      </div>
+      <figcaption><b>How the five relate.</b> One arrival route, five processes, two shared controls.</figcaption>
+      <div class="legend">
+        <span><i class="swatch sw-std"></i> automatic step</span>
+        <span><i class="swatch sw-hold"></i> a person must decide</span>
+        <span><i class="swatch sw-exc"></i> document type</span>
+        <span><i class="swatch sw-auto"></i> Sage X3</span>
+      </div>
+    </figure>
+  </section>
+
+  <!-- ==================== PO ==================== -->
+  <div class="doctype">
+    <div class="spec"><span class="code">PO</span><h2>Purchase-order invoices</h2></div>
+    <p class="define">Goods or services that were ordered properly. A purchase order already
+      exists in Sage and the invoice quotes it. This is the majority of volume, and the case that
+      should need the least human attention.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Recognised by</dt><dd>The invoice quotes a purchase order number</dd></div>
+      <div class="fact"><dt>Owned by</dt><dd>Processor, then approver</dd></div>
+      <div class="fact"><dt>Becomes in Sage</dt><dd>A purchase invoice <span class="num">PIN######</span></dd></div>
+      <div class="fact"><dt>Stops for a person</dt><dd>Approval only</dd></div>
+    </dl>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Invoice arrives quoting a purchase order"] --> B["Read the header and the line detail"]
+    B --> C{"Compare against the purchase order"}
+
+    C -->|"order and receipts agree"| D["Matched three ways"]
+    C -->|"order agrees, nothing received yet"| E["Matched two ways"]
+    C -->|"quantity or price differs"| F["Exception for a processor"]
+
+    D --> G["Approval"]
+    E --> G
+    F --> G
+
+    G --> H{"Does an AP rule flag this one?"}
+    H -->|"no"| I["Purchase invoice created in Sage"]
+    H -->|"yes"| J["AP final review"]
+    J --> I
+    I --> K["Paid"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    classDef exc fill:#FBEDE6,stroke:#A6571B,color:#6B3510
+    class G,J hold
+    class I,K sage
+    class F exc
+</pre>
+      </div>
+      <figcaption><b>PO invoice.</b> The only mandatory human step is approval.</figcaption>
+    </figure>
+
+    <h3>Edge cases we have accounted for</h3>
+    <div class="cases">
+      <div class="case">
+        <div class="when">The invoice beats the goods</div>
+        <div class="then">Nothing has been receipted yet, so a three-way match is impossible. The
+          invoice is matched against the order alone and clearly marked as a two-way match, rather
+          than being held up waiting for receipts.</div>
+      </div>
+      <div class="case">
+        <div class="when">Quantity or price does not agree</div>
+        <div class="then">This becomes an exception for a processor with the variance shown, not an
+          automatic rejection back to the vendor. Most of these are resolved internally.</div>
+      </div>
+      <div class="case">
+        <div class="when">One invoice covers many bills of lading</div>
+        <div class="then">Legitimate for some vendors. Those vendors are held on an approved list
+          so the one-bill-of-lading check does not fight them every month.</div>
+      </div>
+      <div class="case">
+        <div class="when">A monthly summary covers about a thousand receipts</div>
+        <div class="then">The open receipts for the period are selected as a set and reconciled
+          against the invoice total. Nobody ticks a thousand boxes.</div>
+      </div>
+      <div class="case">
+        <div class="when">A load list runs past a thousand lines</div>
+        <div class="then">Handled whole, across however many pages it takes. Line count is not a
+          limit.</div>
+      </div>
+      <div class="case">
+        <div class="when">The same invoice arrives twice</div>
+        <div class="then">Refused before it is created, on the combination of vendor, invoice
+          number and amount — which catches genuine resends without blocking legitimate
+          re-invoicing.</div>
+      </div>
+      <div class="case">
+        <div class="when">Taxes and freight do not add up</div>
+        <div class="then">If net plus taxes plus freight does not equal the stated total, the
+          document cannot be submitted and the difference is shown.</div>
+      </div>
+      <div class="case">
+        <div class="when">Canadian and UK invoices</div>
+        <div class="then">Currency and tax lines follow the company that owns the invoice, so GST,
+          PST and VAT are treated correctly rather than lumped together.</div>
+      </div>
+      <div class="case">
+        <div class="when">Payment terms on the document differ from the vendor's default</div>
+        <div class="then">The document wins, because that is what was agreed on this purchase — but
+          it is flagged so AP can see the override.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NPO ==================== -->
+  <div class="doctype">
+    <div class="spec"><span class="code">NPO</span><h2>Non-PO invoices</h2></div>
+    <p class="define">An invoice with no purchase order on it. Two completely different situations
+      arrive looking identical, and telling them apart is a judgement call — which is why this is
+      the one type that always stops for a person.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Recognised by</dt><dd>No purchase order quoted on the document</dd></div>
+      <div class="fact"><dt>Owned by</dt><dd>Processor decides; the ordering site raises any order</dd></div>
+      <div class="fact"><dt>Becomes in Sage</dt><dd>A purchase invoice <span class="num">PIN######</span></dd></div>
+      <div class="fact"><dt>Stops for a person</dt><dd>The PO decision, then approval</dd></div>
+    </dl>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Invoice arrives with no purchase order"] --> B["Read the document"]
+    B --> C{"Should this purchase have had an order?"}
+
+    C -->|"yes, an order is needed or is late"| D["Ordering site raises the order in Sage by hand"]
+    D --> E["Processor attaches the order number"]
+    E --> F["Matched to the attached order"]
+
+    C -->|"no, this vendor never has one"| G["Coded from a standing template"]
+
+    F --> H["Approval"]
+    G --> H
+    H --> I{"Does an AP rule flag this one?"}
+    I -->|"no"| J["Purchase invoice created in Sage"]
+    I -->|"yes"| K["AP final review"]
+    K --> J
+    J --> L["Paid"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    classDef manual fill:#FBEDE6,stroke:#A6571B,color:#6B3510
+    class C,E,H,K hold
+    class J,L sage
+    class D manual
+</pre>
+      </div>
+      <figcaption><b>Non-PO invoice.</b> The branch near the top is the most consequential decision
+        in the whole process.</figcaption>
+    </figure>
+
+    <div class="note">
+      <b>We are not going to pretend purchase orders can be created automatically.</b> You told us
+      plainly why: orders are raised at manual order desks, rail and truck lines come in through
+      imports, and quantities and prices are keyed by hand. A tool that invents the next order
+      number produces a document nobody in Sage trusts. So we do the opposite — show the processor
+      the vendor's most recent order for reference, and wait for the real number.
+    </div>
+
+    <h3>Edge cases we have accounted for</h3>
+    <div class="cases">
+      <div class="case">
+        <div class="when">A purchase order is needed but does not exist yet</div>
+        <div class="then">The invoice waits in a visible "awaiting order" state with the vendor's
+          last order shown for reference, rather than disappearing into a pile on somebody's desk.</div>
+      </div>
+      <div class="case">
+        <div class="when">The vendor will never have a purchase order</div>
+        <div class="then">Office rent, equipment, professional services. There is nothing to match
+          against, so the lines are coded from a standing template and the invoice goes straight to
+          approval. Forcing an order here would be paperwork for its own sake.</div>
+      </div>
+      <div class="case">
+        <div class="when">The order number is mistyped</div>
+        <div class="then">Checked against your numbering convention and refused if it does not fit,
+          before it reaches Sage.</div>
+      </div>
+      <div class="case">
+        <div class="when">The order is already on another invoice</div>
+        <div class="then">Refused, and the invoice already holding that order is named — so the
+          processor can see immediately whether this is a duplicate or the wrong number.</div>
+      </div>
+      <div class="case">
+        <div class="when">The ordering site raises the order days later</div>
+        <div class="then">Attach it then. Processing resumes exactly where it stopped; nothing has
+          to be re-keyed.</div>
+      </div>
+      <div class="case">
+        <div class="when">The scan is poor and the vendor name is unreadable</div>
+        <div class="then">Held for a person rather than guessed at. A faxed handwritten ticket and
+          a degraded scan both end up in the same place, with the reason stated.</div>
+      </div>
+      <div class="case">
+        <div class="when">The document is a statement of account, not an invoice</div>
+        <div class="then">Held for a person. A statement listing several open items is not
+          something to post, and the ambiguity is flagged rather than resolved silently.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PRE ==================== -->
+  <div class="doctype">
+    <div class="spec"><span class="code">PRE</span><h2>Prepayments</h2></div>
+    <p class="define">A small number of vendors are paid before they ship. Money leaves against a
+      lump-sum invoice, then individual shipments draw that balance down. This is a cash
+      instrument, not just an invoice, and it needs watching.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Recognised by</dt><dd>The vendor is marked as prepaid</dd></div>
+      <div class="fact"><dt>Owned by</dt><dd>Processor and treasury; CFO on the large ones</dd></div>
+      <div class="fact"><dt>Becomes in Sage</dt><dd>A payment, then invoices drawing it down</dd></div>
+      <div class="fact"><dt>Stops for a person</dt><dd>Approval, usually above a processor's limit</dd></div>
+    </dl>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Document from a prepaid vendor"] --> B{"Is this the lump sum or a shipment against it?"}
+
+    B -->|"the lump sum for a period"| C["Register the prepayment and its agreed amount"]
+    C --> D["Raise the order that will hold the period receipts"]
+    D --> E["Approval, escalating to the CFO"]
+    E --> F["Paid within the agreed working days"]
+
+    B -->|"a shipment"| G["Match the shipment to what was received"]
+    G --> H["Approval"]
+    H --> I["Purchase invoice created in Sage"]
+    I --> J["Draw the balance down"]
+    J --> K{"How much of the prepayment is left?"}
+
+    K -->|"comfortable"| L["Carry on"]
+    K -->|"nearing the agreed amount"| M["Warn treasury"]
+    K -->|"exceeded"| N["Flag for review"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    classDef warn fill:#FBEDE6,stroke:#A6571B,color:#6B3510
+    class E,H hold
+    class F,I,J sage
+    class M,N warn
+</pre>
+      </div>
+      <figcaption><b>Prepayment.</b> Two shapes of document, one balance running between them.</figcaption>
+    </figure>
+
+    <h3>Edge cases we have accounted for</h3>
+    <div class="cases">
+      <div class="case">
+        <div class="when">A second lump sum arrives for the same vendor</div>
+        <div class="then">It tops up the existing position rather than opening a duplicate, and the
+          consumed percentage is recalculated against the new total.</div>
+      </div>
+      <div class="case">
+        <div class="when">Shipments approach the prepaid amount</div>
+        <div class="then">Treasury is warned while there is still time to act, not after the
+          balance has gone.</div>
+      </div>
+      <div class="case">
+        <div class="when">Shipments exceed the prepaid amount</div>
+        <div class="then">Flagged for review with the overage stated, because the excess is
+          effectively an unsecured payable against a vendor already paid in advance.</div>
+      </div>
+      <div class="case">
+        <div class="when">A very large invoice arrives from a prepaid vendor</div>
+        <div class="then">Size alone does not make it a prepayment. Ordinary shipment true-ups from
+          these vendors run into eight figures, so the document has to say it is a prepayment.
+          Getting this wrong would book a phantom prepayment worth millions.</div>
+      </div>
+      <div class="case">
+        <div class="when">Payment falls due in two working days</div>
+        <div class="then">Surfaced on arrival rather than discovered late. A prepayment sitting
+          unnoticed in a queue has a real cost with these vendors.</div>
+      </div>
+      <div class="case">
+        <div class="when">The document does not name its period</div>
+        <div class="then">The period is inferred from the invoice date so the prepayment still
+          lands against the right month rather than being left unassigned.</div>
+      </div>
+      <div class="case">
+        <div class="when">A shipment arrives with no open prepayment</div>
+        <div class="then">Treated as an ordinary invoice — matched, approved and posted — rather
+          than failing because a balance was expected.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CR ==================== -->
+  <div class="doctype">
+    <div class="spec"><span class="code">CR</span><h2>Credits</h2></div>
+    <p class="define">A cancellation. It looks like an invoice, is often titled "cancellation
+      invoice", and carries a negative total. Its whole purpose is to reverse something already
+      booked — so what it points at matters more than what it says.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Recognised by</dt><dd>A negative total, or cancellation wording</dd></div>
+      <div class="fact"><dt>Owned by</dt><dd>Processor, then AP review — always</dd></div>
+      <div class="fact"><dt>Becomes in Sage</dt><dd>A credit memo <span class="num">PCM######</span></dd></div>
+      <div class="fact"><dt>Stops for a person</dt><dd>The original invoice reference, then release</dd></div>
+    </dl>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Cancellation document with a negative total"] --> B["Read the document"]
+    B --> C{"Which purchase invoice does this reverse?"}
+
+    C -->|"stated on the document"| E["Identify the credited invoices"]
+    C -->|"not stated"| D["Processor supplies the original invoice number"]
+    D --> E
+
+    E --> F["AP review, for every credit without exception"]
+    F --> G["Credit memo created in Sage from the original lines"]
+    G --> H["Held, awaiting the replacement invoice"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    class C,D,F hold
+    class G,H sage
+</pre>
+      </div>
+      <figcaption><b>Credit.</b> No credit memo is created until it is tied to the invoice it
+        reverses.</figcaption>
+    </figure>
+
+    <div class="note">
+      <b>Why the original invoice number is non-negotiable.</b> Sage builds the credit memo by
+      pulling the lines from the purchase invoice being credited. Without that reference there is
+      nothing to build from. This is the one place where we deliberately made the system refuse to
+      guess and wait for a person instead.
+    </div>
+
+    <h3>Edge cases we have accounted for</h3>
+    <div class="cases">
+      <div class="case">
+        <div class="when">The credit does not say what it reverses</div>
+        <div class="then">Processing stops and asks. Guessing would credit the wrong invoice, and
+          that error compounds through the settlement chain.</div>
+      </div>
+      <div class="case">
+        <div class="when">The referenced number is malformed</div>
+        <div class="then">Checked against the Sage numbering convention before anything is created,
+          so a typo does not become a posted document.</div>
+      </div>
+      <div class="case">
+        <div class="when">One credit covers several vendors</div>
+        <div class="then">The credited invoices are identified individually and the totals split
+          per vendor, rather than posting one lump against whichever vendor happens to be on the
+          header.</div>
+      </div>
+      <div class="case">
+        <div class="when">The replacement invoice has not arrived</div>
+        <div class="then">The credit parks visibly, waiting. It clears automatically when the
+          replacement comes in, so nobody has to remember it.</div>
+      </div>
+      <div class="case">
+        <div class="when">The credit is genuinely standalone</div>
+        <div class="then">A goodwill adjustment with no replacement to come still requires an AP
+          release. Nothing about a credit is automatic.</div>
+      </div>
+      <div class="case">
+        <div class="when">A cancellation arrives from a settlement vendor</div>
+        <div class="then">Treated as a credit first — because the negative total is unambiguous —
+          and its re-invoice is picked up separately as a rebill.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== RB ==================== -->
+  <div class="doctype">
+    <div class="spec"><span class="code">RB</span><h2>Rebills</h2></div>
+    <p class="define">Some vendors price provisionally and settle later — at month end, in the
+      middle of the following month, or retroactively across as much as three months. Settlement
+      arrives as a credit reversing the provisional invoice, plus a fresh invoice at the real
+      price.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Recognised by</dt><dd>A settlement vendor re-invoicing at settled price</dd></div>
+      <div class="fact"><dt>Owned by</dt><dd>Processor and approver; AP where a period is closed</dd></div>
+      <div class="fact"><dt>Becomes in Sage</dt><dd>A purchase invoice linked to the credit and the original</dd></div>
+      <div class="fact"><dt>Stops for a person</dt><dd>Approval, and how to post a closed period</dd></div>
+    </dl>
+
+    <figure>
+      <div class="plate">
+<pre class="mermaid">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'system-ui, -apple-system, Segoe UI, sans-serif','fontSize':'13px','primaryColor':'#FFFFFF','primaryTextColor':'#12172B','primaryBorderColor':'#1F2A54','lineColor':'#555E72'}}}%%
+flowchart TB
+    A["Provisional invoice, already paid within terms"] --> B["Settlement arrives from the vendor"]
+    B --> C["Credit reverses the provisional invoice"]
+    C --> D["Re-invoice at the settled price"]
+    D --> E["Link the three documents as one chain"]
+    E --> F{"Does this land in a closed accounting period?"}
+
+    F -->|"yes"| G["AP decides how to post it"]
+    F -->|"no"| H["Match and approve"]
+    G --> H
+
+    H --> I["Purchase invoice created, completing the chain"]
+    I --> J["Paid"]
+
+    classDef hold fill:#FBF3DC,stroke:#8A6D05,color:#5E4A03
+    classDef sage fill:#E6F2EB,stroke:#1B6B4A,color:#12402C
+    class F,G,H hold
+    class I,J sage
+</pre>
+      </div>
+      <figcaption><b>Rebill.</b> Three documents that must remain provably connected.</figcaption>
+    </figure>
+
+    <div class="note">
+      <b>What matters here is the audit trail.</b> A settlement leaves three documents behind: the
+      original provisional invoice, the credit that reversed it, and the rebill at the settled
+      price. Six months later somebody will ask why a vendor appears to have been paid twice for
+      one shipment. The answer needs to be one click, not an afternoon.
+    </div>
+
+    <h3>Edge cases we have accounted for</h3>
+    <div class="cases">
+      <div class="case">
+        <div class="when">Settlement reaches back into a closed period</div>
+        <div class="then">The platform does not decide this. It routes the document to AP with the
+          closed-period condition stated, and waits.</div>
+      </div>
+      <div class="case">
+        <div class="when">Settlement arrives in pieces across several months</div>
+        <div class="then">The chain stays open and shows what is still outstanding, rather than
+          appearing complete after the first piece lands.</div>
+      </div>
+      <div class="case">
+        <div class="when">The rebill arrives before the credit</div>
+        <div class="then">The chain shows the gap explicitly, so it is obvious a credit is expected
+          rather than the rebill looking like an unrelated new invoice.</div>
+      </div>
+      <div class="case">
+        <div class="when">The settled price is lower than the provisional</div>
+        <div class="then">The rebill is smaller than the original and the net effect is visible on
+          the chain, so the vendor position reads correctly at a glance.</div>
+      </div>
+      <div class="case">
+        <div class="when">Somebody asks about it six months later</div>
+        <div class="then">The original, the credit and the rebill are one linked chain with all
+          three Sage numbers on it. That is the answer to the audit question before it is asked.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CONTROLS ==================== -->
+  <section>
+    <p class="kicker">Across all five types</p>
+    <h2>Where people stay in the loop</h2>
+    <div class="col">
+      <p>A process review that only removes steps is a risk register in disguise. These are the
+        places where the platform deliberately stops and waits, and the business reason for each.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <caption>Decision points</caption>
+        <thead><tr><th>Control</th><th>When it stops</th><th>Why a person, not a rule</th></tr></thead>
+        <tbody>
+          <tr><td>Sorting review</td><td>The document type is not clear enough to act on</td>
+              <td>A misfiled document costs more to unwind than to sort correctly once</td></tr>
+          <tr><td>PO decision</td><td>A non-PO invoice arrives</td>
+              <td>Only a person knows whether the purchase warranted an order, and orders are raised by hand</td></tr>
+          <tr><td>Credit reference</td><td>A credit does not state what it reverses</td>
+              <td>Guessing would credit the wrong invoice, and the error compounds</td></tr>
+          <tr><td>Approval</td><td>Every invoice, before it reaches Sage</td>
+              <td>Authorising money is the control; it is never skipped</td></tr>
+          <tr><td>AP final review</td><td>When a rule flags it, and for every credit</td>
+              <td>Reviewing everything means reviewing nothing carefully</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Authority and escalation</h3>
+    <div class="tablewrap">
+      <table>
+        <caption>Approval limits as we understand them</caption>
+        <thead><tr><th>Role</th><th>Limit</th><th>Behaviour</th></tr></thead>
+        <tbody>
+          <tr><td>Processor</td><td class="mono-col">$10,000</td><td>Codes and prepares; approves within limit</td></tr>
+          <tr><td>AP Manager</td><td class="mono-col">$25,000</td><td>Owns the review rules and the dashboards</td></tr>
+          <tr><td>Approver</td><td class="mono-col">$50,000</td><td>Above the limit, escalates automatically to the CFO</td></tr>
+          <tr><td>CFO</td><td class="mono-col">Unlimited</td><td>Escalation endpoint; can act from email while travelling</td></tr>
+          <tr><td>Administrator</td><td class="mono-col">$0</td><td>Configures the system but cannot approve spend</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <p>Two rules sit behind that table. Anything an administrator codes routes to somebody else
+        for approval, and nobody approves an invoice they created or edited themselves. Rejecting
+        an invoice requires a written reason, because the person receiving it back needs to know
+        what to fix.</p>
+      <p>Every field change, match, approval and release is recorded with who did it and when, and
+        cannot be altered afterwards.</p>
+    </div>
+  </section>
+
+  <!-- ==================== OPEN ==================== -->
+  <section>
+    <p class="kicker">Over to you</p>
+    <h2>What we still need from the business</h2>
+    <div class="col">
+      <p>These are decisions only your team can make. None of them block a demonstration; all of
+        them shape the live configuration.</p>
+      <ol>
+        <li><strong>The full AP review rule set.</strong> We have built terms mismatches, anything
+          over twenty-five thousand, and all credits. We expect there are more.</li>
+        <li><strong>The flagged-vendor list</strong> — which vendors warrant extra review, and for
+          how many invoices before they are trusted.</li>
+        <li><strong>The complete prepaid vendor list.</strong> Two are configured. Are there
+          others, and who maintains the list?</li>
+        <li><strong>Settlement vendors and their cadences</strong> — who settles at month end, who
+          in the following month, who retroactively.</li>
+        <li><strong>Closed-period policy for settlements</strong> — who decides, and what the
+          cut-off is.</li>
+        <li><strong>Automatic approval.</strong> Deliberately switched off. Small, high-confidence,
+          well-behaved invoices could skip approval entirely — but only once you are satisfied the
+          accuracy has earned it, and probably one company at a time.</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    <span>Business process review · H.J. Baker &amp; Bro., LLC</span>
+    <span>Prepared by <b style="color:var(--ochre)">Alferix</b></span>
+  </footer>
+
+</div>
